@@ -1,0 +1,30 @@
+/********************************************************************************************/
+prepare y execute:
+prepare se utiliza para preparar una consulta SQL, lo que significa que se define una plantilla de consulta con marcadores de posición para valores que se llenarán más tarde.
+execute se utiliza para ejecutar la consulta preparada con los valores proporcionados. Los valores se enlazan a los marcadores de posición.
+Es más seguro y protege contra la inyección SQL, ya que los valores se enlazan adecuadamente, evitando la interpretación errónea de los datos como código SQL.
+Ejemplo de prepare y execute:
+
+
+$sql = "SELECT * FROM tabla WHERE columna = :valor";
+$consulta = $pdo->prepare($sql);
+$valor = 'mi_valor';
+$consulta->bindParam(':valor', $valor);
+$consulta->execute();
+
+
+query:
+query es una función de PDO que se utiliza para ejecutar consultas SQL directamente, sin necesidad de prepararlas por separado.
+Es útil cuando tienes una consulta SQL estática que no necesita cambios de valores o parámetros.
+No es adecuado para consultas con parámetros dinámicos, ya que no proporciona una protección automática contra la inyección SQL.
+
+$sql = "SELECT * FROM tabla WHERE columna = 'valor'";
+$resultado = $pdo->query($sql);
+/********************************************************************************************/
+
+PDO::ATTR_ERRMODE es una constante que representa el atributo de PDO que estás configurando. En este caso, estás configurando el modo de manejo de errores.
+
+PDO::ERRMODE_EXCEPTION es una constante que se utiliza para indicar que deseas que PDO lance excepciones cuando ocurran errores en lugar de simplemente devolver códigos de error. Cuando se establece en ERRMODE_EXCEPTION, PDO lanzará excepciones de tipo PDOException en caso de cualquier error en las consultas o interacciones con la base de datos. Esto facilita la detección y el manejo de errores de manera más efectiva en tu código.
+
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+/********************************************************************************************/

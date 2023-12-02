@@ -1,0 +1,100 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width-scale=1">
+    <link rel="stylesheet" href="estilos.css">
+    <title>&nbsp;</title>
+</head>
+
+<body>
+    <div class="container marginTop30">
+        <p>
+            Introduce alguno de los campos para buscar al cliente deseado, con los campos vacios saldrá una lista de todos los clientes.
+        </p>
+        <br>
+        <form class="row g-3 needs-validation" novalidate>
+            <div class="col-md-4">
+                <label for="validationCustom01" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="validationCustom01" placeholder="Mark" required>
+            </div>
+            <div class="col-md-4">
+                <label for="validationCustom02" class="form-label">Primer Apellido</label>
+                <input type="text" class="form-control" id="validationCustom02" placeholder="Otto" required>
+            </div>
+            <div class="col-md-4">
+                <label for="validationCustom02" class="form-label">Segundo Apellido</label>
+                <input type="text" class="form-control" id="validationCustom02" placeholder="Otto" required>
+            </div>
+            <div class="col-md-6">
+                    <label for="validationDefaultUsername" class="form-label">Correo electrónico</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="validationDefaultUsername"  aria-describedby="inputGroupPrepend2" required>
+                        <span class="input-group-text" id="inputGroupPrepend2">@</span>
+                        <select class="form-select" aria-label="Default select example">
+                          <option selected>gmail.com</option>
+                          <option value="1">gmail.es</option>
+                          <option value="2">hotmail.com</option>
+                          <option value="3">hotmail.es</option>
+                        </select>
+                    </div>
+                </div>
+            <div class="col-md-4">
+                <label for="validationCustom03" class="form-label">Móvil</label>
+                <input type="number" class="form-control" id="validationCustom03" required>
+            </div>
+            <div class="col-12">
+                <button type="button" class="btn btn-outline-dark marginLeft20" onclick="Cargar('NuevoCliente.html', 'cuerpoLogin')"> Buscar </button>
+            </div>
+        </form>
+    </div>
+    <div class="container marginTop20">
+        <div class="col-md-8 borderListDiv">
+            <div class="list-group">
+                <div class="allMargin10 allPadding10">
+                    <b>Id:</b> 1
+                    <b>Name:</b> Pablo Gomar Velló &nbsp;
+                    <b>Móvil:</b> 666666666 &nbsp;
+                    <b>Correo electrónico:</b> pablo@gmail.com
+                    <button type="button" class="btn btn-outline-dark marginLeft20" onclick="Cargar('InformacionCliente.html', 'cuerpoLogin')">Ver</button>
+                </div>
+                <hr>
+                <div class="allMargin10 allPadding10">
+                    <b>Id:</b> 2
+                    <b>Name:</b> Pablo Gomar Velló &nbsp;
+                    <b>Móvil:</b> 666666666 &nbsp;
+                    <b>Correo electrónico:</b> pablo@gmail.com
+                    <button type="button" class="btn btn-outline-dark marginLeft20">Ver</button>
+                </div>
+                <hr>
+                <div class="allMargin10 allPadding10">
+                    <b>Id:</b> 3
+                    <b>Name:</b> Pablo Gomar Velló &nbsp;
+                    <b>Móvil:</b> 666666666 &nbsp;
+                    <b>Correo electrónico:</b> pablo@gmail.com
+                    <button type="button" class="btn btn-outline-dark marginLeft20">Ver</button>
+                </div>
+                <hr>
+                <div class="allMargin10 allPadding10">
+                    <b>Id:</b> 4
+                    <b>Name:</b> Pablo Gomar Velló &nbsp;
+                    <b>Móvil:</b> 666666666 &nbsp;
+                    <b>Correo electrónico:</b> pablo@gmail.com
+                    <button type="button" class="btn btn-outline-dark marginLeft20">Ver</button>
+                </div>
+                <hr>
+                <div class="allMargin10 allPadding10">
+                    <b>Id:</b> 5
+                    <b>Name:</b> Pablo Gomar Velló &nbsp;
+                    <b>Móvil:</b> 666666666 &nbsp;
+                    <b>Correo electrónico:</b> pablo@gmail.com
+                    <button type="button" class="btn btn-outline-dark marginLeft20">Ver</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+		<br>
+</body>
+
+</html>
