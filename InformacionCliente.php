@@ -4,29 +4,50 @@ include_once("Modulos/Usuario.php");
 $id_usuario = $_GET["id_usuario"];
 
 
-function guardarDatosGenerales($id_usuario, $fecha, $peso, $porcenGrasa, $musculo){
+?>
+<script>
+    function guardarDatosGeneralesJS(id_usuario){
+        var fecha = eur2iso(get("fechaDG"));
+        var peso = get("pesoDG");
+        var grasa = get("grasaDG");
+        var musculo = get("musculoDG");
 
-}
+        if(!fecha || !peso || !grasa || !musculo){
+            alert("Falta información por rellenar");
+        } else {
+            var dts = {
+                function: "guardarDatosGenerales",
+                id_usuario:id_usuario,
+                fecha: fecha,
+                peso: peso,
+                grasa: grasa,
+                musculo: musculo
+            };
+            jsonAjax("_server.php?", dts, (r)=>{
+                debugger;
+                if(!r.ok){
+                    alert(r.msg);
+                } else {
+                    //recargarPagina();
+                    Cargar("InformacionCliente.php", "cuerpo");
+                }
+            });
+        }
+    }
+    function eliminarDatosNutricionalesGenerales(id_dato_general){
+        var dts={
+            function: "eliminarDatosNutricionalesGenerales",
+            id_dato_general: id_dato_general
+        };
+        //Falta hacer el ajax
+        debugger;
+        jsonAjax("_server.php", dts, ()=>{
 
-function eliminaDatoGeneral($id_usuario, $id_datoGeneral){
+        });
+    }
 
-}
-
-function guardarPlieguesCutaneos($id_usuario, $tricipital, $subescapular, $supraliaco, $abdominal, $musloAnterior, $gemelo){
-
-}
-
-function eliminaPliegueCutaneo($id_usuario, $id_pliegue){
-
-}
-
-function guardaPerimetros($id_usuario, $cinturaSuperiorAbdominal, $abdominal, $cadera, $muslo, $gemelo, $brazoContraido, $brazoRelajado){
-
-}
-
-function eliminaPerimetros($id_usuario, $id_perimetro){
-    
-}
+</script>
+<?php
 
 $u = Usuario::getDatosGenerales($id_usuario);
 $tarifa = Usuario::getTarifaUsuario($id_usuario);
@@ -105,53 +126,55 @@ $tarifa = Usuario::getTarifaUsuario($id_usuario);
                     <form class="row g-3 needs-validation" novalidate>
                         <div class="col-md-3">
                             <label for="validationCustom01" class="form-label"><b>Fecha</b></label>
-                            <input type="text" class="form-control" id="validationCustom01" value="19/03/2022" readonly>
+                            <input id="fechaDG" type="text" class="form-control" id="validationCustom01" value="19/03/2022" readonly>
                         </div>
                         <div class="col-md-3">
                             <label for="validationCustom01" class="form-label"><b>Peso</b></label>
-                            <input type="number" class="form-control" id="validationCustom01" value="55" required>
+                            <input id="pesoDG" type="number" class="form-control" id="validationCustom01" value="55" required>
                         </div>
                         <div class="col-md-3">
                             <label for="validationCustom02" class="form-label"><b>% Grasa</b></label>
-                            <input type="number" step="0.01" class="form-control" id="validationCustom02" value="11.50" required>
+                            <input id="grasaDG" type="number" step="0.01" class="form-control" id="validationCustom02" value="11.50" required>
                         </div>
                         <div class="col-md-3">
                             <label for="validationCustom02" class="form-label"><b>% Musculo</b></label>
-                            <input type="number" step="0.01" class="form-control" id="validationCustom02" value="Otto" required>
+                            <input id="musculoDG" type="number" step="0.01" class="form-control" id="validationCustom02" value="Otto" required>
                         </div>
                         
                         <div class="col-12">
-                            <button type="button" class="btn btn-outline-dark">Guardar</button>
+                            <button type="button" class="btn btn-outline-dark" onclick="guardarDatosGeneralesJS(<?php echo $id_usuario?>)">Guardar</button>
                         </div>
                     </form>
                 </div>
-                <div class="scroll">
-	                <table class="table table-striped marginTop20">
-	                    <thead>
-	                        <tr>
-	                        <th scope="col">Fecha</th>
-	                        <th scope="col">Peso (kg) </th>
-	                        <th scope="col">% Grasa</th>
-	                        <th scope="col">% Musculo</th>
-	                        </tr>
-	                    </thead>
-	                    <tbody  class="overflow-auto">
-                            <?php
-                            $dg = Usuario::getDatosNutricionalesGenerales($id_usuario);
-                            foreach($dg as $d){
-                                ?>
-                                <tr>
-                                    <th scope="row"><?php echo $d->fecha?></th>
-                                    <td><?php echo $d->peso?></td>
-                                    <td><?php echo $d->grasaAVG?></td>
-                                    <td><?php echo $d->musculoAVG?></td>
-                                    <td><button type="button" class="btn btn-outline-dark">Eliminar</button></td>
-	                            </tr>
-                                <?php
-                            }
-                            ?>
-	                    </tbody>
-	                </table>
+                <div id="datosNutricionalesGenerales" class="scroll">
+                <table class='table table-striped marginTop20'>
+	<thead>
+		<tr>
+		<th scope='col'>Fecha</th>
+		<th scope='col'>Peso (kg) </th>
+		<th scope='col'>% Grasa</th>
+		<th scope='col'>% Musculo</th>º
+		</tr>
+	</thead>
+	<tbody  class='overflow-auto'>
+		<?php
+		$dg = Usuario::getDatosNutricionalesGenerales($id_usuario);
+		Logger::haz_log('GOVE', var_export($dg,true));
+		foreach($dg as $d){
+			Logger::haz_log('GOVE', var_export($d,true));
+			?>
+			<tr>
+				<th scope='row'><?php echo $d->fecha?></th>
+				<td><?php echo $d->peso?></td>
+				<td><?php echo $d->grasaAVG?></td>
+				<td><?php echo $d->musculoAVG?></td>
+				<td><button type='button' class='btn btn-outline-dark' onclick='eliminarDatosNutricionalesGenerales(<?php echo $d->id ?>)'>Eliminar</button></td>
+			</tr>
+			<?php
+		}
+		?>
+	</tbody>
+</table>
                 </div>
             </div>
 			<hr class="hrPer">

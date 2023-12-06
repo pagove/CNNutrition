@@ -13,8 +13,37 @@ function jsonAjax(url, data, callback) {
     .catch(error => {
       console.error('Error en la solicitud AJAX:', error);
     });
-  }
+}
+function get(id){
+	return document.getElementById(id).value;
+}
+function eur2iso(fecha, separador = "/"){
+	fecha = fecha.split(separador);
+	return fecha[2] + "-" + fecha[1] + "-" + fecha[0];
+}
+function iso2eur(fecha, separado="-"){
+	fecha = fecha.split(separado);
+	return fecha[2] + "/" + fecha[1] + "-" + fecha[0];
+}
 
+function errorAlert(texto){
+	var alert = 
+	"<div class='alert alert-danger d-flex align-items-center' role='alert'>" +
+  		"<svg class='bi flex-shrink-0 me-2' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>"+
+  		"<div>"+
+    		texto +
+  		"</div>" +
+	"</div>";
+}
+function successAlert(texto){
+	var alert = 
+	"<div class='alert alert-success d-flex align-items-center' role='alert'>"+
+		"<svg class='bi flex-shrink-0 me-2' role='img' aria-label='Success:'><use xlink:href='#check-circle-fill'/></svg>"+
+		"<div>" +
+	  		texto +
+		"</div>"+
+  	"</div>";
+}
 
 function setActiveLink(num){
 

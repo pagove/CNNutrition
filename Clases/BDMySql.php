@@ -7,6 +7,8 @@ class BDMySql
     private $con;
     private static $in_transaction = false;
 
+    public static $ultimo_error;
+
     public function __construct($strCon, $user, $pass)
     {
         try {
@@ -30,6 +32,9 @@ class BDMySql
         return $ret;
     }
 
+    public function getObject($sql){
+        return self::getAll($sql, "",true)[0];
+    }
     public function getAll($sql, $indice = "", $as_object = false)
     {
         if ($as_object) {
@@ -61,9 +66,6 @@ class BDMySql
                     }
                 }
             } else {
-                if(count($dts) == 1) {
-                    return $dts[0];
-                }
                 return $dts;
             }
         } else {
@@ -152,16 +154,22 @@ class BDMySql
         } catch (PDOException $e) {
             $msg = $e->getCode() . " , " . $e->getMessage();
             Logger::haz_log(__CLASS__,$msg);
+            $this->ultimo_error = $msg;
             return new TRetorno(false, $msg);
         }
         return new TRetorno(true);
     }
     public  function ejecuta($sql)
     {
-        if ($this->con->exec("$sql")) return true;
-        Logger::haz_log(__CLASS__,$this->con->errorCode() . "----". $this->con->errorInfo());
-        Logger::haz_log(__CLASS__,$sql);
-        return false;
+        try{
+            if($this->con->exec($sql)) return true;
+        } catch(PDOException $e){
+            $msg = $e->getCode() . " , " . $e->getMessage();
+            Logger::haz_log(__CLASS__,$msg);
+            Logger::haz_log(__CLASS__,$sql);
+            $this->ultimo_error = $msg . " -- " .$sql;
+            return false;
+        }
     }
     public function insertOrUpdate($tabla, $datos, $claves)
     {
@@ -222,13 +230,7 @@ class BDMySql
         $v = $in ? " in $v " : $v;
         return $v;
     }
-    public function ultimaError()
-    {
-        $obj = new stdClass();
-        $obj->errorCode;
-        $obj->errorMessage;
-        return $obj;
-    }
+    
 
     public static function setInTransaction($in_transaction){
         self::$in_transaction = $in_transaction;

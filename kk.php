@@ -1,7 +1,7 @@
 <?php
 include_once("Modulos/Usuario.php");
 
-$r = Usuario::getTarifaUsuario(1);
+$r = Usuario::getDatosNutricionalesGenerales(1);
 
-echo $r;
+var_dump($r);
 ?>
