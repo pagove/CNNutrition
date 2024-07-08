@@ -2,14 +2,17 @@
 include_once("Clases/Logger.php");
 session_start();
 Logger::haz_log("GOVE", $_SESSION["id_usuario"]);
-if($_SESSION["id_usuario"]){
+if ($_SESSION["id_usuario"]) {
     $id_usuario = $_SESSION["id_usuario"];
-    ?>
-    <script>Cargar('InformacionCliente.php?id_usuario=' + <?php echo $id_usuario?>, 'cuerpo')</script>
-    <?php
+?>
+    <script>
+        Cargar('InformacionCliente.php?id_usuario=' + <?php echo $id_usuario ?>, 'cuerpo')
+    </script>
+<?php
 }
 ?>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width-scale=1">
@@ -23,8 +26,11 @@ if($_SESSION["id_usuario"]){
                 passwd: document.getElementById("passwd").value
             };
             jsonAjax("_server.php?", dts, (r) => {
-                if(r.ok){
+                if (r.ok) {
                     Cargar('InformacionCliente.php?id_usuario=' + r.id, 'cuerpo');
+                    document.getElementById("loginButton").style.display = "none";
+                    document.getElementById("salirButton").style.display = "";
+                    document.getElementById("perfilButton").style.display = "";
                 } else {
                     alert(r.msg);
                 }
@@ -59,4 +65,5 @@ if($_SESSION["id_usuario"]){
         </div>
     </div>
 </body>
+
 </html>

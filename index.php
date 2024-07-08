@@ -1,5 +1,12 @@
-<!doctype html>
-<html lang="en">
+<?php
+include_once("Clases/Logger.php");
+setcookie('PHPSESSID', 'value', time() - 1);
+session_start();
+?>
+
+<doctype html>
+  <html lang="en">
+
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -8,7 +15,22 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="CSS/estilos.css">
     <title>CNutrition</title>
+    <script>
+      function cerrarSesion() {
+        var datos = {
+          function: "cerrarSesion"
+        };
+        jsonAjax("_server.php", datos, (r) => {
+          if (r.ok) {
+            window.location.replace("index.php");
+          } else {
+            alert(r.msg);
+          }
+        });
+      }
+    </script>
   </head>
+
   <body onload="Cargar('Inicio.html', 'cuerpo')">
     <header>
       <nav class="navbar  navbar-expand-lg navbar-dark bg-dark heightNavBar">
@@ -33,7 +55,13 @@
             </ul>
             <ul class="navbar-nav me-5 ms-auto mb-2 mb-lg-0 d-flex">
               <li class="nav-item me-5 mb-2 mb-lg-0">
-                <a class="nav-link active textoNavBar" aria-current="page" href="#" onclick="Cargar('Login.php', 'cuerpo')">Login</a>
+                <a class="nav-link active textoNavBar" aria-current="page" href="#" id="loginButton" onclick="Cargar('Login.php', 'cuerpo')">Login</a>
+              </li>
+              <li>
+                <a style="display: none !important;" class="nav-link active textoNavBar" aria-current="page" href="#" id="perfilButton" onclick="Cargar('Login.php', 'cuerpo')">Perfil</a>
+              </li>
+              <li>
+                <a style="display: none !important;" class="nav-link active textoNavBar" aria-current="page" href="#" id="salirButton" onclick="cerrarSesion()">Salir</a>
               </li>
             </ul>
           </div>
@@ -47,11 +75,12 @@
 
     <footer>
     </footer>
-    
-    
+
+
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="JS/funcionalidad.js"></script>
     <script src="JS/libCapas2021.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   </body>
-</html>
+
+  </html>

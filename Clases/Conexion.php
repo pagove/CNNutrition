@@ -8,22 +8,12 @@ class Conexion
 
     public static $pool = array();
 
-    private static function datosConexion($test = true, $remote = true)
-    {
-        $obj = new stdClass();
-        $obj->host = $remote ? "192.168.1.3" : "localhost";
-        $obj->user = "root";
-        $obj->passwd = "mariaDBpasswd1!";
-        $obj->database = $test ? "CNutrition" : "CNutritionPro";
-        return $obj;
-    }
-
     public static function conecta()
     {
 
         if (!@self::$pool[Utilidades::getPID()]) {
             try {
-                $d = DatosConexion::getDatosConexion(true,true);
+                $d = DatosConexion::getDatosConexion(true, false);
                 $strCon = "mysql:host=$d->host;dbname=$d->database";
                 $con = new BDMySql($strCon, $d->user, $d->passwd);
                 self::$pool[Utilidades::getPID()] = $con;
