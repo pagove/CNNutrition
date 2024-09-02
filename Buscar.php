@@ -28,7 +28,7 @@ session_start();
                     var tbody = "";
                     r.forEach((u) => {
                         tbody += "<tr>";
-                        tbody += "<th scope='row'>" + u.nombre + "</th>";
+                        tbody += "<th scope='row'>" + u.nombre + " " + u.apellido1 + " " + u.apellido2 + "</th>";
                         tbody += "<td>" + u.movil + "</td>";
                         tbody += "<td>" + u.email + "</td>";
                         tbody += "<td><button type='button' onclick='verPerfilUsuario(" + u.id + ")' class='btn btn-outline-dark'>Ver</button></td>";
