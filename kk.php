@@ -1,4 +1,10 @@
 <?php
+include_once "clases.php";
+
+
+print_r(Usuario::getDatosGenerales(1));
+
+die();
 include_once("Modulos/Usuario.php");
 
 print_r(Usuario::listarUsuarios("", "", "", "", ""));

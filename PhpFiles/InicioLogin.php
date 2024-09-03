@@ -1,4 +1,5 @@
 <?php
+include_once("../clases.php");
 session_start();
 ?>
 

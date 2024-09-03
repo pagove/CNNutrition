@@ -1,8 +1,9 @@
 <?php
-include_once("Clases/Conexion.php");
-include_once("Clases/Utilidades.php");
-include_once("Clases/TRetorno.php");
-include_once("Clases/Logger.php");
+//include_once("Clases/Conexion.php");
+//include_once("Clases/Utilidades.php");
+//include_once("Clases/TRetorno.php");
+//include_once("Clases/Logger.php");
+include_once("../clases.php");
 session_start();
 class Usuario
 {
@@ -47,6 +48,7 @@ class Usuario
         Logger::haz_log("GOVE", $sql);
         return $obd->getObject($sql);
     }
+
     public static function getTarifaUsuario($idUsuario)
     {
         $obd = Conexion::conecta();

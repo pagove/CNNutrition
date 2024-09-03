@@ -1,5 +1,6 @@
 <?php
 include_once("Clases/Logger.php");
+include_once("../clases.php");
 session_start();
 
 if (isset($_SESSION["id_usuario"])) {
@@ -33,7 +34,7 @@ if (isset($_SESSION["id_usuario"])) {
                         Cargar('InicioLogin.php?id_usuario=' + r.id, 'cuerpo');
                         document.getElementById("perfilButton").style.display = "none";
                     }
-
+                    localStorage.setItem("CNNutrition_email", document.getElementById("email").value);
                     document.getElementById("loginButton").style.display = "none";
                     document.getElementById("salirButton").style.display = "";
 
@@ -64,12 +65,14 @@ if (isset($_SESSION["id_usuario"])) {
                         <input id="passwd" type="password" class="form-control">
                     </div>
                     <button type="button" class="btn btn-dark" onclick="compruebaLogin()">Entrar</button>
-                    <button type="button" class="btn btn-dark" onclick="Cargar('InicioCliente.html', 'cuerpo')">Prueba</button>
                 </form>
             </div>
 
         </div>
     </div>
 </body>
+<script>
+    if (localStorage.getItem("CNNutrition_email")) document.getElementById("email").value = localStorage.getItem("CNNutrition_email");
+</script>
 
 </html>

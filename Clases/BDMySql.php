@@ -1,6 +1,7 @@
 <?php
-include_once("BDMySql.php");
-include_once("Logger.php");
+//include_once("BDMySql.php");
+//include_once("Logger.php");
+include_once("../clases.php");
 class BDMySql
 {
 

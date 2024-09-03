@@ -1,4 +1,5 @@
 <?php
+include_once("../clases.php");
 class Logger
 {
     private static $directorio_var_log = '/var/log';

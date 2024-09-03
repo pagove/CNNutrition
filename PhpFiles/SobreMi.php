@@ -1,3 +1,6 @@
+<?php
+include_once("../clases.php");
+?>
 <html lang="en">
 
 <head>
@@ -18,12 +21,13 @@
                 <div class="row">
                     <div class="col-5"> <img src="/web_images/sobreMi/Carlos.jpg" class="img-fluid" alt="..."> </div>
                     <div class="col-5">
-                    <br>
-                    <p>
-                    </p> columns continue along the new line. Subsequent columns continue along the new line. Subsequent columns continue along the new line.</div>
+                        <br>
+                        <p>
+                        </p> columns continue along the new line. Subsequent columns continue along the new line. Subsequent columns continue along the new line.
+                    </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </body>

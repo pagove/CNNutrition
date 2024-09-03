@@ -1,8 +1,10 @@
 <?php
-include_once("Clases/Conexion.php");
-include_once("Clases/Utilidades.php");
-include_once("Clases/TRetorno.php");
-include_once("Clases/Logger.php");
+//include_once("Clases/Conexion.php");
+//include_once("Clases/Utilidades.php");
+//include_once("Clases/TRetorno.php");
+//include_once("Clases/Logger.php");
+include_once("../clases.php");
+
 setcookie('PHPSESSID', 'value', time() - 1);
 session_start();
 ?>
@@ -44,16 +46,16 @@ session_start();
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-5 mb-2 mb-lg-0">
               <li class="nav-item me-5 mb-2 mb-lg-0">
-                <a class="nav-link active textoNavBar" aria-current="page" href="#" onclick="Cargar('Inicio.html', 'cuerpo')">Inicio</a>
+                <a class="nav-link active textoNavBar" aria-current="page" href="#" onclick="Cargar('Inicio.php', 'cuerpo')">Inicio</a>
               </li>
               <li class="nav-item me-5 mb-2 mb-lg-0">
-                <a class="nav-link active textoNavBar" aria-current="page" href="#" onclick="Cargar('Tarifas.html', 'cuerpo')">Tarifas</a>
+                <a class="nav-link active textoNavBar" aria-current="page" href="#" onclick="Cargar('Tarifas.php', 'cuerpo')">Tarifas</a>
               </li>
               <li class="nav-item me-5 mb-2 mb-lg-0">
-                <a class="nav-link active textoNavBar" aria-current="page" href="#" onclick="Cargar('SobreMi.html', 'cuerpo')">Sobre mi</a>
+                <a class="nav-link active textoNavBar" aria-current="page" href="#" onclick="Cargar('SobreMi.php', 'cuerpo')">Sobre mi</a>
               </li>
               <li class="nav-item me-5 mb-2 mb-lg-0">
-                <a class="nav-link active textoNavBar" aria-current="page" href="#" onclick="Cargar('Contacto.html', 'cuerpo')">Contacto</a>
+                <a class="nav-link active textoNavBar" aria-current="page" href="#" onclick="Cargar('Contacto.php', 'cuerpo')">Contacto</a>
               </li>
             </ul>
             <ul class="navbar-nav me-5 ms-auto mb-2 mb-lg-0 d-flex">

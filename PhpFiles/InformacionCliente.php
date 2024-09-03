@@ -1,6 +1,7 @@
 <?php
-include_once("Clases/Logger.php");
-include_once("Modulos/Usuario.php");
+//include_once("Clases/Logger.php");
+//include_once("Modulos/Usuario.php");
+include_once("../clases.php");
 $id_usuario = $_GET["id_usuario"];
 ?>
 <script>
@@ -40,7 +41,7 @@ $id_usuario = $_GET["id_usuario"];
         if (confirm) {
             jsonAjax("_server.php", dts, (r) => {
                 if (r.ok) {
-                    Cargar("./InformacionCliente.php?id_usuario=" + id_usuario, "cuerpo");
+                    Cargar("./PhpFiles/InformacionCliente.php?id_usuario=" + id_usuario, "cuerpo");
                 } else {
                     alert("No se ha podido eliminar la información " + r.msg);
                 }
