@@ -1,10 +1,6 @@
 <?php
-//include_once("Clases/Conexion.php");
-//include_once("Clases/Utilidades.php");
-//include_once("Clases/TRetorno.php");
-//include_once("Clases/Logger.php");
-include_once("../clases.php");
-
+include_once("clases.php");
+Logger::haz_log("APP", "INICIO");
 setcookie('PHPSESSID', 'value', time() - 1);
 session_start();
 ?>
@@ -36,7 +32,7 @@ session_start();
     </script>
   </head>
 
-  <body onload="Cargar('Inicio.html', 'cuerpo')">
+  <body onload="Cargar('Inicio.php', 'cuerpo')">
     <header>
       <nav class="navbar  navbar-expand-lg navbar-dark bg-dark heightNavBar">
         <div class="container-fluid">

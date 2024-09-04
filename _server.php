@@ -1,6 +1,6 @@
 <?php
-include_once("Clases/Logger.php");
-include_once("Modulos/Usuario.php");
+include_once("clases.php");
+
 
 $dts = json_decode(file_get_contents("php://input"), true);
 Logger::haz_log("GOVE", var_export($dts, true));

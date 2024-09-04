@@ -1,5 +1,5 @@
 <?php
-include_once("Clases/Logger.php");
+
 include_once("../clases.php");
 session_start();
 

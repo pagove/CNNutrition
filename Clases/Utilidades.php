@@ -1,5 +1,4 @@
 <?php
-include_once("../clases.php");
 class Utilidades
 {
 

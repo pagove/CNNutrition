@@ -1,6 +1,6 @@
 <?php
+header("content-type: text/plain"); // si no es ver html
 include_once "clases.php";
-
 
 print_r(Usuario::getDatosGenerales(1));
 
