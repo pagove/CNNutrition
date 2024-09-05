@@ -2,8 +2,6 @@
 
 class Conexion
 {
-    private static $REMOTE = true;
-    private static $TEST = true;
     public static $pool = array();
 
     public static function conecta()
@@ -11,7 +9,7 @@ class Conexion
 
         if (!@self::$pool[Utilidades::getPID()]) {
             try {
-                $d = DatosConexion::getDatosConexion(self::$REMOTE, self::$TEST);
+                $d = DatosConexion::getDatosConexion();
                 $strCon = "mysql:host=$d->host;dbname=$d->database";
                 $con = new BDMySql($strCon, $d->user, $d->passwd);
                 self::$pool[Utilidades::getPID()] = $con;
