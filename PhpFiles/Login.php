@@ -1,6 +1,6 @@
 <?php
 
-include_once("../clases.php");
+include_once("clases.php");
 session_start();
 
 if (isset($_SESSION["id_usuario"])) {

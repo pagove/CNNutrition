@@ -1,7 +1,5 @@
 <?php
-//include_once("Clases/Logger.php");
-//include_once("Modulos/Usuario.php");
-include_once("../clases.php");
+include_once("clases.php");
 $id_usuario = $_GET["id_usuario"];
 ?>
 <script>

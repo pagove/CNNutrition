@@ -1,6 +1,5 @@
 <?php
-//require("/volume1/web/phpBD/baseDatos.php");
-include_once("../clases.php");
+include_once("clases.php");
 ?>
 <html lang="en">
 

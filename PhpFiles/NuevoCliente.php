@@ -1,10 +1,5 @@
 <?php
-//include_once("Clases/Conexion.php");
-//include_once("Clases/Utilidades.php");
-//include_once("Clases/TRetorno.php");
-//include_once("Clases/Logger.php");
-//include_once("Modulos/Tarifas.php");
-include_once("../clases.php");
+include_once("clases.php");
 session_start();
 ?>
 <html lang="en">
