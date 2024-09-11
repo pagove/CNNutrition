@@ -3,35 +3,32 @@ session_start();
 class Usuario
 {
 
+    private static $SYSLOG = "USUARIO";
     public static function compruebaLogin($usr, $passwd)
     {
-        Logger::haz_log("Cliente_CompruebaLogin", "Comprobando login");
+
         $obd = Conexion::conecta();
         $sql = "SELECT id, email, passwd, rol FROM Usuarios WHERE email='$usr' and baja=0";
         $ret = $obd->getObject($sql);
         if (!$ret) {
-            Logger::haz_log("Cliente_CompruebaLogin", "Usuario no encontrado");
-            return new TRetorno(false, "Usuario/contraseña incorrectos");
+            return new TRetorno(false, "Usuario/contraseña incorrectos", null, self::$SYSLOG);
         } else {
             if ($ret->passwd == Utilidades::encripta($passwd)) {
                 $dts = new stdClass();
                 $dts->id = $ret->id;
                 $dts->rol = $ret->rol;
                 $_SESSION["id_usuario"] = $ret->id;
-                return new TRetorno(true, "", $dts);
+                return new TRetorno(true, "", $dts, self::$SYSLOG);
             } else {
-                Logger::haz_log("Cliente_CompruebaLogin", "Contraseña incorrecta $usr");
-                return new TRetorno(false, "Usuario/contraseña incorrectos");
+                return new TRetorno(false, "Usuario/contraseña incorrectos", array("usuario" => $usr, "passwd" => $passwd), self::$SYSLOG);
             }
         }
     }
 
     public static function cerrarSesion()
     {
-        Logger::haz_log("cerrarSesion", "Cerrando sesion");
         $ok = session_destroy();
-        if (!$ok) Logger::haz_log("cerrarSesion", "Error cerrando la sesion");
-        return new TRetorno($ok, $ok ? "" : "Error cerrando la sesion");
+        return new TRetorno($ok, $ok ? "" : "Error cerrando la sesion", null, self::$SYSLOG);
     }
 
     public static function getDatosGenerales($idUsuario)
@@ -40,7 +37,6 @@ class Usuario
         $sql = "SELECT nombre, apellido1, apellido2, email, movil, sexo,altura,patologias, aversiones
                 FROM Usuarios
                 WHERE id=$idUsuario";
-        Logger::haz_log("GOVE", $sql);
         return $obd->getObject($sql);
     }
 
@@ -112,7 +108,61 @@ class Usuario
         $query .= $tel ? " and movil=$tel " : "";
 
         $sql = " select * from Usuarios where true $query";
-        Logger::haz_log("GOVE", $sql);
         return $obd->getAll($sql, "", true);
+    }
+
+    public static function registraUsuario($nombre, $ap1, $ap2, $email, $tel, $fecha_nac, $sexo, $altura, $tarifa, $passwd, $patologias, $aversiones)
+    {
+        Conexion::setAutoBeginTransaction();
+        $ok = true;
+        $obd = Conexion::conecta();
+        $_passwd = Utilidades::encripta($passwd);
+        $insertStruct = array(
+            "id_tarifa" => intval($tarifa),
+            "email" => "$email",
+            "passwd" => "$_passwd",
+            "nombre" => "$nombre",
+            "apellido1" => "$ap1",
+            "apellido2" => "$ap2",
+            "patologias" => "$patologias",
+            "aversiones" => "$aversiones",
+            "movil" => "$tel",
+            "sexo" => "$sexo",
+            "altura" => $altura,
+            "fechaNacimiento" => "$fecha_nac",
+            "rol" => 1,
+            "baja" => 0,
+            "changePasswd" => 1
+        );
+
+        $ok = $obd->insert("Usuarios", $insertStruct);
+        if ($ok) {
+            if (DatosConexion::imRemote() || DatosConexion::imTest()) {
+                $email = "pablogomve@gmail.com";
+            }
+
+            $urlWeb = DatosConexion::imRemote() ? "localhost" : "http://gove.synology.me";
+            $urlCesionDatos = DatosConexion::imRemote() ? "localhost/PhpFiles/PoliticasPrivacidad.php" : "http://gove.synology.me/PhpFiles/PoliticasPrivacidad.php";
+            $html = "<p>Desde nuestra clínica le damos la bienvenida y agradecemos la confianza que ha depositado en nosotros.<br>
+                    Puede consultar sus datos a través de nuestra página web <a href=\"$urlWeb\">CNNutrition</a>-
+                    accediendo con usuario y clave: 
+                    <ul>
+                    <li><b>Usuario:</b>$email</li>
+                    <li><b>Contrasea: </b>$passwd</li>
+                    </ul>
+                    </p>
+                    <br>
+                    <p>
+                    Para que podamos acceder a sus datos es necesario que acepte nuestras <b>políticas de privacidad y cesión de datos</b>
+                    haciendo click en el siguiente enlace <a href=\"$urlCesionDatos\">Políticas de privacidad</a>.
+                    </p>
+                    <p>Un cordial saludo.</p>";
+
+            $ret = SendEmail::send($email, "Mensaje de bienvenida", "", $html);
+            $ok = $ok && $ret->ok;
+            return Conexion::autoEndTransaction($ok, "Usuario creado correctamente", $ret->msg, self::$SYSLOG);
+        } else {
+            return Conexion::autoEndTransaction(false, $obd->ultimo_error, $obd->ultimo_error, self::$SYSLOG);
+        }
     }
 }

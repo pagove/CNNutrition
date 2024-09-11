@@ -11,7 +11,6 @@ include_once("clases.php");
 </head>
 
 <body>
-
     <div class="container marginTop60">
         <div class="centrarTexto">
             <h2>Tarifas</h2>
@@ -19,21 +18,17 @@ include_once("clases.php");
         <hr id="hrPerTarifa">
         <div class="row align-items-center">
             <?php
-            $tarifas = recuperarTarifas();
-            while ($fila = mysqli_fetch_row($tarifas)) {
 
-                $imagen = "web_images/imgTarifas/" . $fila[4];
-                $titulo = $fila[1];
-                $descripcion = $fila[2];
-                $precio = $fila[3] . " €";
+            $tarifas = Tarifa::getTarifas();
+            foreach ($tarifas as $t) {
             ?>
                 <div class="col">
                     <div class="centrarTexto marginTop20 bordeRedondoFin alturaTarifa" style="width: 16rem;">
-                        <img src='<?php echo $imagen ?>' class="card-img-top tamCardImg marginTop10" alt="imagen">
+                        <img src='<?= Imagenes::getImgTarifas($t->img) ?>' class="card-img-top tamCardImg marginTop10" alt="imagen">
                         <div class="card-body centrarTexto">
-                            <h5 class="card-title"> <?php echo $titulo ?></h5>
-                            <p class="card-text tamCardText"> <?php echo $descripcion ?></p>
-                            <b class="centrarTexto"> <?php echo $precio ?></b>
+                            <h5 class="card-title"> <?= $t->titulo ?></h5>
+                            <p class="card-text tamCardText"> <?= $t->descripcion ?></p>
+                            <b class="centrarTexto"> <?= $t->precio ?></b>
                         </div>
                     </div>
                 </div>
@@ -42,7 +37,6 @@ include_once("clases.php");
             ?>
         </div>
     </div>
-
 </body>
 
 </html>

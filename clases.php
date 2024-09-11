@@ -2,7 +2,7 @@
 
 //Modificando la ruta de inclusión path
 $_ruta = dirname(__FILE__);
-$directories = array("Clases", "Modulos");
+$directories = array("Clases", "Clases/Mail", "Modulos");
 $path = get_include_path();
 
 $os = PHP_OS;

@@ -9,6 +9,46 @@ session_start();
 	<meta name="viewport" content="width=device-width-scale=1">
 	<link rel="stylesheet" href="/css/estilos.css">
 	<title>&nbsp;</title>
+	<script>
+		function abrirPoliticasPrivacidad() {
+			event.preventDefault();
+			window.open("PhpFiles/PoliticasPrivacidad.php", "_blank");
+		}
+
+		function registraUsuario() {
+			var regex_email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			var dts = {
+				function: "registraUsuario",
+				nombre: document.getElementById("txtNombre").value,
+				ap1: document.getElementById("txtAp1").value,
+				ap2: document.getElementById("txtAp2").value,
+				email: document.getElementById("txtEmail").value,
+				tel: document.getElementById("numberTel").value,
+				nacimiento: document.getElementById("dateNac").value,
+				sexo: document.getElementById("selSexo").value,
+				altura: document.getElementById("numberAltura").value,
+				tarifa: document.getElementById("selTarifa").value,
+				passwd: document.getElementById("textPasswd").value,
+				patologias: document.getElementById("areaPatologias").value,
+				aversion: document.getElementById("areaAversion").value
+			};
+			if (!dts.nombre) return alert("El campo 'nombre' es obligatorio");
+			if (!dts.ap1 || !dts.ap2) return alert("Los apellidos son obligatorios");
+			if (!dts.email) return alert("El campo 'email' es obligatorio");
+			if (!dts.tel) return alert("El campo 'móvil' es obligatorio");
+			if (!dts.nacimiento) return alert("El campo 'fecha nacimiento' es obligatorio");
+			if (!dts.sexo) return alert("El campo 'sexo' es obligatorio");
+			if (!dts.altura) return alert("El campo 'altura' es obligatorio");
+			if (!dts.tarifa) return alert("El campo 'plan dietético' es obligatorio");
+			if (!dts.passwd) return alert("El campo 'contraseña' es obligatorio");
+			if (new Date(dts.nacimiento) >= new Date()) return alert("Fecha nacimiento incorrecta");
+			if (!regex_email.test(dts.email)) return alert("El correo no está bien formado");
+
+			jsonAjax("_server.php", dts, (r) => {
+				debugger;
+			});
+		}
+	</script>
 </head>
 
 <body>
@@ -100,14 +140,14 @@ session_start();
 				<div class="form-check">
 					<input class="form-check-input" type="checkbox" value="" id="checkConformidad" required>
 					<label class="form-check-label" for="invalidCheck2">
-						<a>Estoy de acuerdo con los términos y las condiciones</a>
+						<a onclick="abrirPoliticasPrivacidad()" href="">Estoy de acuerdo con los términos y las condiciones</a>
 					</label>
 				</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class=" row">
 			<div class="col-12">
-				<button type="button" class="btn btn-outline-dark marginLeft20">Guardar</button>
+				<button type="button" onclick="registraUsuario()" class="btn btn-outline-dark marginLeft20">Guardar</button>
 			</div>
 		</div>
 	</div>

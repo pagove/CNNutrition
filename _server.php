@@ -3,7 +3,7 @@ include_once("clases.php");
 
 
 $dts = json_decode(file_get_contents("php://input"), true);
-Logger::haz_log("GOVE", var_export($dts, true));
+//Logger::haz_log("GOVE", var_export($dts, true));
 
 switch ($dts["function"]) {
     case "compruebaLogin":
@@ -21,6 +21,28 @@ switch ($dts["function"]) {
     case "listarUsuarios":
         listarUsuarios($dts["nombre"], $dts["ap1"], $dts["ap2"], $dts["email"], $dts["tel"]);
         break;
+    case "registraUsuario":
+        registraUsuario(
+            $dts["nombre"],
+            $dts["ap1"],
+            $dts["ap2"],
+            $dts["email"],
+            $dts["tel"],
+            $dts["nacimiento"],
+            $dts["sexo"],
+            $dts["altura"],
+            $dts["tarifa"],
+            $dts["passwd"],
+            $dts["patologias"],
+            $dts["aversion"]
+        );
+        break;
+}
+
+function registraUsuario($nombre, $ap1, $ap2, $email, $tel, $fecha_nac, $sexo, $altura, $tarifa, $passwd, $patologias, $aversiones)
+{
+
+    die(json_encode(Usuario::registraUsuario($nombre, $ap1, $ap2, $email, $tel, $fecha_nac, $sexo, $altura, $tarifa, $passwd, $patologias, $aversiones)));
 }
 
 function listarUsuarios($nombre, $ap1, $ap2, $email, $tel)

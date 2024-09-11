@@ -15,7 +15,8 @@ class TRetorno
             }
         }
         if ($save_log && !$ok) {
-            Logger::haz_log($save_log, $msg);
+            Logger::haz_log($save_log, var_export(debug_backtrace(), true));
+            Logger::haz_log($save_log, var_export($this, true));
         }
     }
 }

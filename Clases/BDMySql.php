@@ -1,10 +1,9 @@
 <?php
 class BDMySql
 {
-
-    private $con;
-    private static $in_transaction = false;
-
+    public $con;
+    private $in_transaction = false;
+    private $in_transaction_error = false;
     public $ultimo_error;
 
     public function __construct($strCon, $user, $pass)
@@ -17,8 +16,28 @@ class BDMySql
         }
     }
 
+    public function setInTransaction($intransacition)
+    {
+        $this->in_transaction = $intransacition;
+    }
+    public function begin()
+    {
+        if ($this->in_transaction) return true;
+        $this->ultimo_error = "";
+        return $this->ejecuta("BEGIN");
+    }
+    public function rollback()
+    {
+        $this->ejecuta("ROLLBACK");
+    }
+    public function commit()
+    {
+        if ($this->in_transaction_error) return $this->rollback();
+        return $this->ejecuta("COMMIT");
+    }
 
-    /**
+
+    /**  
      * PDO::FETCH_ASSOC -> devuelve un array indexado por el nombre de la columna en la bd
      * PDO::FETCH_OBJ -> devuelve un array de objetos donde los atributos tienen el nombre de la columna de la bd
      */
@@ -123,9 +142,6 @@ class BDMySql
         }
         return $ret;
     }
-
-    public static function each($sql) {}
-
     /**
      * Puede lanzar un delete o un update pasandole un array de datos y clave
      */
@@ -218,7 +234,7 @@ class BDMySql
         $sql = substr($sql, 0, -4);
         return self::ejecuta($sql);
     }
-    public function insert($tabla, $datos)
+    public function insert2($tabla, $datos)
     {
         $sql = "INSERT INTO $tabla (";
         foreach ($datos as $k => $v) {
@@ -234,7 +250,7 @@ class BDMySql
         return self::ejecuta($sql);
     }
 
-    public static function array2set($v, $in = true, $parentesis = true, $comillas = true)
+    public function array2set($v, $in = true, $parentesis = true, $comillas = true)
     {
         if ($comillas) {
             $v = array_map(function ($el) {
@@ -249,12 +265,138 @@ class BDMySql
     }
 
 
-    public static function setInTransaction($in_transaction)
+    public  function tableMetaData($table)
     {
-        self::$in_transaction = $in_transaction;
+        $sql = " DESCRIBE $table";
+        $ret = array();
+        $regs = self::getAll($sql, "", true);
+        foreach ($regs as $r) {
+            $ret[$r->Field] = $r;
+        }
+        return $ret;
     }
-    public function getInTransaction()
+
+    public   function insert($tabla, $datos)
     {
-        return self::$in_transaction;
+        $obd = Conexion::conecta();
+        $ok = true;
+        $msg = "";
+        $metaData = self::tableMetaData($tabla);
+        $sql = "insert into $tabla (";
+        $values = " values (";
+
+        foreach ($metaData as $col => $m) {
+            echo "\n";
+            /** Comprobar defaults o autoincrements */
+            if (!array_key_exists($col, $datos) && (isset($m->Default) || isset($m->Extra))) continue;
+            /** Campo no indica en los datos */
+            //if (!@$datos[$col]) {
+            if (!array_key_exists($col, $datos)) {
+                if ($m->Null == "NO") {
+                    $ok = false;
+                    $msg = "Columna $col no indicada en el array de datos";
+                    break;
+                } else {
+                    continue;
+                }
+            }
+            /** Comprobar tipos de datos*/
+            $v = @$datos[$col];
+            $tv = gettype($v);
+            switch ($tv) {
+                case "boolean":
+                    if ($m->Type == "tinyint(1)") {
+                        $sql .= "$col,";
+                        $_v = $v ? 1 : 0;
+                        $values .= "$_v,";
+                    } else {
+                        $ok = false;
+                        $msg = "El tipo de $v($tv) no corresponde con $col(" . $m->Type . ")";
+                        break 2;
+                    }
+                    echo "boolean";
+                    break;
+                case "integer":
+                    if (substr($m->Type, 0, 3) == "int") {
+                        $tam = str_replace("int(", "", $m->Type);
+                        $tam = substr($tam, 0, -1);
+                        if (strlen($v) < $tam) {
+                            $sql .= "$col,";
+                            $values .= "$v,";
+                        } else {
+                            $ok = false;
+                            $msg = "El tipo de $v($tv) no corresponde con $col(" . $m->Type . ")";
+                            break 2;
+                        }
+                    } else {
+                        if ($m->Type == "tinyint(1)") {
+                            if ($v == 0 || $v == 1) {
+                                $sql .= "$col,";
+                                $values .= "$v,";
+                            } else {
+                                $ok = false;
+                                $msg = "El tipo de $v($tv(" . strlen(strval($v)) . ") no corresponde con $col(" . $m->Type . ")";
+                                break 2;
+                            }
+                        } else {
+                            $ok = false;
+                            $msg = "El tipo de $v($tv) no corresponde con $col(" . $m->Type . ")";
+                            break 2;
+                        }
+                    }
+                    break;
+                case "double":
+                    if ($m->Type == "double" || $m->Type == "decimal") {
+                        $sql .= "$col,";
+                        $values .= "$v,";
+                    } else {
+                        $ok = false;
+                        $msg = "El tipo de $v($tv) no corresponde con $col(" . $m->Type . ")";
+                        break 2;
+                    }
+                    break;
+                case "string":
+                    //$v = $obd->quote($v);
+                    if ($m->Type == "date") {
+                        if (strlen($v) == 10) {
+                            $sql .= "$col,";
+                            $values .= "'$v',";
+                        } else {
+                            $ok = false;
+                            $msg = "El tipo de $v(date) no corresponde con $col(" . $m->Type . ")";
+                            break 2;
+                        }
+                    } else {
+                        $length_c = substr($m->Type, 8);
+                        $length_c = substr($length_c, 0, -1);
+                        if (strlen($v) <= $length_c) {
+                            $sql .= "$col,";
+                            $values .= "'$v',";
+                        } else {
+                            $ok = false;
+                            $msg = "El tipo de $v($tv(" . strlen($v) . ") ) no corresponde con $col(" . $m->Type . ")";
+                            break 2;
+                        }
+                    }
+                    break;
+
+                case "array":
+                case "object":
+                case "NULL":
+                    //por implementar, no se da el caso.
+                    break;
+            }
+        }
+        if (!$ok) {
+            $this->ultimo_error = $msg;
+            Logger::haz_log("BDMySql_insert", $msg);
+            return false;
+        } else {
+            $sql = substr($sql, 0, -1);
+            $values = substr($values, 0, -1);
+            $sql .= ") $values );";
+            $ok = $obd->ejecuta($sql);
+            return $ok;
+        }
     }
 }
