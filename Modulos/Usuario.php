@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 class Usuario
 {
 
@@ -13,7 +13,7 @@ class Usuario
         if (!$ret) {
             return new TRetorno(false, "Usuario/contraseña incorrectos", null, self::$SYSLOG);
         } else {
-            if ($ret->passwd == Utilidades::encripta($passwd)) {
+            if ($ret->passwd == Utilidades::encripta_hash($passwd)) {
                 $dts = new stdClass();
                 $dts->id = $ret->id;
                 $dts->rol = $ret->rol;
@@ -34,7 +34,7 @@ class Usuario
     public static function getDatosGenerales($idUsuario)
     {
         $obd = Conexion::conecta();
-        $sql = "SELECT nombre, apellido1, apellido2, email, movil, sexo,altura,patologias, aversiones
+        $sql = "SELECT *
                 FROM Usuarios
                 WHERE id=$idUsuario";
         return $obd->getObject($sql);
@@ -116,7 +116,7 @@ class Usuario
         Conexion::setAutoBeginTransaction();
         $ok = true;
         $obd = Conexion::conecta();
-        $_passwd = Utilidades::encripta($passwd);
+        $_passwd = Utilidades::encripta_hash($passwd);
         $insertStruct = array(
             "id_tarifa" => intval($tarifa),
             "email" => "$email",
@@ -134,15 +134,23 @@ class Usuario
             "baja" => 0,
             "changePasswd" => 1
         );
-
-        $ok = $obd->insert("Usuarios", $insertStruct);
+        $ok = $obd->insert("Usuarios", $insertStruct, "id");
         if ($ok) {
             if (DatosConexion::imRemote() || DatosConexion::imTest()) {
                 $email = "pablogomve@gmail.com";
             }
+            $extra_params = Utilidades::encriptar(json_encode((object)array(
+                "id" => $ok,
+                "nombre" => $nombre,
+                "ap1" => $ap1,
+                "ap2" => $ap2,
+                "fecha_envio" => date("Y-m-d H:i:s")
+            )));
+
 
             $urlWeb = DatosConexion::imRemote() ? "localhost" : "http://gove.synology.me";
             $urlCesionDatos = DatosConexion::imRemote() ? "localhost/PhpFiles/PoliticasPrivacidad.php" : "http://gove.synology.me/PhpFiles/PoliticasPrivacidad.php";
+            $urlCesionDatos = $urlCesionDatos . "?param=$extra_params";
             $html = "<p>Desde nuestra clínica le damos la bienvenida y agradecemos la confianza que ha depositado en nosotros.<br>
                     Puede consultar sus datos a través de nuestra página web <a href=\"$urlWeb\">CNNutrition</a>-
                     accediendo con usuario y clave: 
@@ -163,6 +171,30 @@ class Usuario
             return Conexion::autoEndTransaction($ok, "Usuario creado correctamente", $ret->msg, self::$SYSLOG);
         } else {
             return Conexion::autoEndTransaction(false, $obd->ultimo_error, $obd->ultimo_error, self::$SYSLOG);
+        }
+    }
+
+    public static function getPrivacidad($id_usuario)
+    {
+        $obd = Conexion::conecta();
+        $sql = "select acepta_rgpd,fecha_aceptacion_rgpd,ip_aceptacion_rgpd
+                from Usuarios
+                where id='$id_usuario'";
+        return $obd->getObject($sql);
+    }
+
+    public static function setPrivacidad($id_usuario, $ip_usuario)
+    {
+        $obd = Conexion::conecta();
+        $sql = "update Usuarios set acepta_rgpd='1',
+                 ip_aceptacion_rgpd='$ip_usuario', fecha_aceptacion_rgpd=CURRENT_TIMESTAMP()
+                where id=$id_usuario";
+        $filas = 0;
+        $ok = $obd->ejecuta2($sql, $filas);
+        if ($filas && $ok) {
+            return new TRetorno(true, "", array("filas_afectadas" => $filas));
+        } else {
+            return new TRetorno($ok, $obd->ultimo_error, array("filas_afectadas" => $filas), self::$SYSLOG);
         }
     }
 }

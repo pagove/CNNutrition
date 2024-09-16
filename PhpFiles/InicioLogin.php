@@ -44,7 +44,7 @@ session_start();
 				setActiveLink(1)
 			</script>
 			<script>
-				Cargar('Buscar.php', 'cuerpoLogin')
+				Cargar('Buscar.php', 'cuerpoLogin');
 			</script>
 		<?php
 			break;
@@ -54,7 +54,7 @@ session_start();
 				setActiveLink(2)
 			</script>
 			<script>
-				Cargar('ModTarifas.php', 'cuerpoLogin')
+				Cargar('ModTarifas.php', 'cuerpoLogin');
 			</script>
 		<?php
 			break;
@@ -64,7 +64,7 @@ session_start();
 				setActiveLink(0)
 			</script>
 			<script>
-				Cargar('NuevoCliente.php', 'cuerpoLogin')
+				Cargar('NuevoCliente.php', 'cuerpoLogin');
 			</script>
 		<?php
 			break;

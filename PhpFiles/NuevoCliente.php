@@ -45,7 +45,12 @@ session_start();
 			if (!regex_email.test(dts.email)) return alert("El correo no está bien formado");
 
 			jsonAjax("_server.php", dts, (r) => {
-				debugger;
+				if (r.ok) {
+					debugger;
+					Cargar('Buscar.php', 'cuerpoLogin')
+				} else {
+					alert(r.msg);
+				}
 			});
 		}
 	</script>
@@ -135,6 +140,7 @@ session_start();
 				<textarea class="form-control" id="areaAversion" name="aversion" style="height: 100px"></textarea>
 			</div>
 		</div>
+		<!--
 		<div class="row">
 			<div class="col-12">
 				<div class="form-check">
@@ -145,7 +151,8 @@ session_start();
 				</div>
 			</div>
 		</div>
-		<div class=" row">
+				-->
+		<div class="row" style="margin-top: 5px;">
 			<div class="col-12">
 				<button type="button" onclick="registraUsuario()" class="btn btn-outline-dark marginLeft20">Guardar</button>
 			</div>

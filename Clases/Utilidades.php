@@ -15,11 +15,6 @@ class Utilidades
         return getmygid();
     }
 
-    public static function encripta($passwd)
-    {
-        return hash("sha256", $passwd, false);
-    }
-
     public static function creaCriterioQuery($campos, $query, $op = "or")
     {
         $ret = "";
@@ -39,12 +34,6 @@ class Utilidades
             call_user_func($function());
             die();
         }
-    }
-
-
-    public static function registraUsuario($nombre, $ap1, $ap2, $email, $tel, $fecha_nac, $sexo, $altura, $tarifa, $passwd, $patologias, $aversiones)
-    {
-        Logger::haz_log("INSERTA_USUARIO", "$nombre, $ap1, $ap2, $email, $tel, $fecha_nac, $sexo, $altura, $tarifa, $passwd, $patologias, $aversiones");
     }
 
 
@@ -76,5 +65,38 @@ class Utilidades
         }
 
         return $string;
+    }
+
+
+    public static function encripta_hash($passwd)
+    {
+        return hash("sha256", $passwd, false);
+    }
+
+    public static function encriptar($data)
+    {
+
+        $metodo_cifrado = 'AES-256-CBC';
+
+        $iv_length = openssl_cipher_iv_length($metodo_cifrado);
+        $iv = openssl_random_pseudo_bytes($iv_length);
+
+        $encrypted = openssl_encrypt($data, $metodo_cifrado, DatosConexion::getAESpasswd(), 0, $iv);
+
+        return base64_encode($iv . $encrypted);
+    }
+
+    public static function desencriptar($data_encriptada)
+    {
+        $metodo_cifrado = 'AES-256-CBC';
+
+        $data_encriptada = base64_decode($data_encriptada);
+
+        $iv_length = openssl_cipher_iv_length($metodo_cifrado);
+
+        $iv = substr($data_encriptada, 0, $iv_length);
+        $encrypted = substr($data_encriptada, $iv_length);
+
+        return openssl_decrypt($encrypted, $metodo_cifrado, DatosConexion::getAESpasswd(), 0, $iv);
     }
 }

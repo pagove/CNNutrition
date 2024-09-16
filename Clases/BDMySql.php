@@ -276,7 +276,7 @@ class BDMySql
         return $ret;
     }
 
-    public   function insert($tabla, $datos)
+    public function insert($tabla, $datos, $returning = "")
     {
         $obd = Conexion::conecta();
         $ok = true;
@@ -284,7 +284,11 @@ class BDMySql
         $metaData = self::tableMetaData($tabla);
         $sql = "insert into $tabla (";
         $values = " values (";
-
+        if ($returning && !array_key_exists($returning, $metaData)) {
+            Logger::haz_log("BDMySql_insert", "Returning col ($returning) not in $tabla");
+            $obd->ultimo_error = "Returning col ($returning) not in $tabla";
+            return false;
+        }
         foreach ($metaData as $col => $m) {
             echo "\n";
             /** Comprobar defaults o autoincrements */
@@ -394,8 +398,14 @@ class BDMySql
         } else {
             $sql = substr($sql, 0, -1);
             $values = substr($values, 0, -1);
-            $sql .= ") $values );";
-            $ok = $obd->ejecuta($sql);
+            $sql .= ") $values )";
+            if ($returning) {
+                $sql .= "returning $returning;";
+                $ok = $obd->get($sql);
+            } else {
+                $sql .= ";";
+                $ok = $obd->ejecuta($sql);
+            }
             return $ok;
         }
     }

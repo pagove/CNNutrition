@@ -2,7 +2,12 @@
 header("content-type: text/plain"); // si no es ver html
 include_once "clases.php";
 
+$date = date("Y-m-d");
+$tc = 22;
+$obd = Conexion::conecta();
+print_r($obd->insert("ClientesMes", array("totalClientes" => $tc, "fecha" => $date), "id"));
 
+die();
 $a = array("codigo" => 0);
 
 print_r(array_key_exists("codigo", $a));

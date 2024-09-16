@@ -1,5 +1,12 @@
 <?php
+session_start();
 include_once("clases.php");
+
+$params = array_key_exists("param", $_GET) ? $_GET["param"] : false;
+$dts = $params ? json_decode(Utilidades::desencriptar($params)) : false;
+
+$email = DatosConexion::getDatosEmail()->usr;
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -9,6 +16,33 @@ include_once("clases.php");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Política de Privacidad - [Nombre de la Clínica]</title>
+    <script src="../JS/funcionalidad.js"></script>
+    <script>
+        function aceptarTerminosYCondiciones(id_usuario, ip_usuario) {
+            var acceptPolicy = document.getElementById("acceptPolicy").checked;
+            if (acceptPolicy) {
+                var datos = {
+                    function: 'aceptarTerminosYCondiciones',
+                    id_usuario: id_usuario,
+                    ip_usuario: ip_usuario
+                };
+                jsonAjax("../_server.php", datos, (r) => {
+                    if (r.ok) {
+                        alert("Se han aceptado las politicas de privacidad correctamente", () => {
+                            window.location.reload();
+                        });
+                    } else {
+                        alert(r.msg);
+                    }
+                });
+            }
+        }
+
+        function disableSubmitBtn() {
+            var disabled = !document.getElementById("acceptPolicy").checked;
+            document.getElementById("submitBtn").disabled = disabled;
+        }
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,6 +78,47 @@ include_once("clases.php");
         a {
             color: #2980B9;
         }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495E;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="checkbox"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #2980B9;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:disabled {
+            background-color: #ccc;
+        }
     </style>
 </head>
 
@@ -51,16 +126,16 @@ include_once("clases.php");
 
     <div class="container">
         <h1>Política de Privacidad</h1>
-        <p><strong>Última actualización:</strong> [Fecha]</p>
-        <p>En <strong>[Nombre de la clínica]</strong> ("la Clínica"), estamos comprometidos con la protección de la privacidad y la seguridad de los datos personales de nuestros usuarios, pacientes y empleados. Esta Política de Privacidad describe cómo recopilamos, utilizamos y protegemos la información personal que nos proporcionas al interactuar con nosotros.</p>
+        <!-- <p><strong>Última actualización:</strong> [Fecha]</p> -->
+        <p>En <strong>CNNutrition</strong>, estamos comprometidos con la protección de la privacidad y la seguridad de los datos personales de nuestros usuarios, pacientes y empleados. Esta Política de Privacidad describe cómo recopilamos, utilizamos y protegemos la información personal que nos proporcionas al interactuar con nosotros.</p>
 
         <h2>1. Responsable del Tratamiento de los Datos</h2>
         <p>El responsable del tratamiento de tus datos personales es:</p>
         <ul>
             <li><strong>Nombre de la Clínica:</strong> [Nombre de la clínica]</li>
-            <li><strong>Dirección:</strong> [Dirección física]</li>
-            <li><strong>Correo electrónico:</strong> [Email de contacto]</li>
-            <li><strong>Teléfono:</strong> [Número de teléfono]</li>
+            <li><strong>Dirección:</strong> C. Pintor Sorolla, 19, 46790 Jeresa, Valencia</li>
+            <li><strong>Correo electrónico:</strong> <?= $email ?></li>
+            <li><strong>Teléfono:</strong> 633088655</li>
         </ul>
 
         <h2>2. Información Recopilada</h2>
@@ -78,17 +153,18 @@ include_once("clases.php");
             <li><strong>Provisión de servicios de nutrición y salud:</strong> Utilizamos tus datos para gestionar tus citas, preparar tus planes nutricionales y realizar un seguimiento de tu progreso.</li>
             <li><strong>Comunicaciones:</strong> Para contactarte en relación con tus citas, recordatorios, y enviar información sobre nuestros servicios.</li>
             <li><strong>Cumplimiento de obligaciones legales:</strong> Tratamos tus datos personales para cumplir con obligaciones legales que nos son aplicables, como el mantenimiento de historiales médicos y fiscales.</li>
-            <li><strong>Marketing (opcional):</strong> Si has dado tu consentimiento, podremos enviarte información sobre promociones o novedades relacionadas con nuestros servicios.</li>
+            <li><strong>Marketing:</strong> Si has dado tu consentimiento, podremos enviarte información sobre promociones o novedades relacionadas con nuestros servicios.</li>
         </ul>
 
         <h2>4. Base Legal para el Tratamiento de los Datos</h2>
         <p>Dependiendo del tipo de datos y del uso que hagamos de ellos, la base legal para su tratamiento puede ser:</p>
         <ul>
-            <li><strong>Consentimiento del usuario:</strong> Cuando lo requiera la ley, solicitaremos tu consentimiento previo para tratar tus datos.</li>
-            <li><strong>Ejecución de un contrato:</strong> Para prestar nuestros servicios de nutrición y salud, necesitamos procesar tus datos.</li>
-            <li><strong>Interés legítimo:</strong> En algunos casos, procesamos los datos por nuestro interés legítimo en mejorar la atención al cliente.</li>
-            <li><strong>Cumplimiento de obligaciones legales:</strong> Cuando la ley nos exige almacenar ciertos datos, como el historial médico.</li>
+            <li><strong>Consentimiento explícito del usuario:</strong> Para tratar datos sensibles relacionados con tu salud (por ejemplo, historial médico, datos nutricionales), necesitamos tu consentimiento explícito. Este consentimiento se obtiene mediante la firma de un formulario de consentimiento informado, previo a la prestación de nuestros servicios.</li>
+            <li><strong>Ejecución de un contrato:</strong> Tratamos tus datos personales cuando es necesario para la ejecución de un contrato contigo. Esto incluye los datos necesarios para prestarte nuestros servicios nutricionales, como la elaboración de un plan alimenticio personalizado o la gestión de citas.</li>
+            <li><strong>Cumplimiento de obligaciones legales:</strong> En algunos casos, el tratamiento de tus datos es necesario para cumplir con obligaciones legales, tales como la conservación de historiales médicos según la normativa sanitaria vigente, o el cumplimiento de normativas fiscales.</li>
+            <li><strong>Interés legítimo:</strong> Podemos procesar tus datos basándonos en nuestro interés legítimo para mejorar nuestros servicios, siempre que no prevalezcan tus derechos y libertades. Por ejemplo, podríamos realizar estudios estadísticos internos para mejorar la eficacia de nuestros tratamientos nutricionales, utilizando datos anonimizados.</li>
         </ul>
+        <p>Es importante destacar que puedes retirar tu consentimiento en cualquier momento para aquellos tratamientos de datos que se basen en él, sin que esto afecte la legalidad del tratamiento realizado con anterioridad a la retirada del consentimiento.</p>
 
         <h2>5. Compartición de Datos con Terceros</h2>
         <p>No compartimos tus datos personales con terceros, excepto en los siguientes casos:</p>
@@ -112,7 +188,7 @@ include_once("clases.php");
             <li><strong>Solicitar la portabilidad</strong> de tus datos a otro proveedor de servicios, cuando sea técnicamente posible.</li>
             <li><strong>Retirar el consentimiento</strong> en cualquier momento, cuando el tratamiento se base en tu consentimiento previo.</li>
         </ul>
-        <p>Para ejercer cualquiera de estos derechos, puedes contactarnos en <strong>[Correo electrónico de contacto]</strong>.</p>
+        <p>Para ejercer cualquiera de estos derechos, puedes contactarnos en <strong><?= $email ?></strong>.</p>
 
         <h2>8. Seguridad de los Datos</h2>
         <p>Implementamos medidas técnicas y organizativas para proteger tus datos personales contra pérdida, acceso no autorizado, alteración o divulgación. Nuestro personal está capacitado y comprometido con la confidencialidad y seguridad de los datos.</p>
@@ -126,13 +202,33 @@ include_once("clases.php");
         <h2>11. Contacto</h2>
         <p>Si tienes alguna duda o inquietud sobre nuestra Política de Privacidad o sobre cómo tratamos tus datos personales, no dudes en contactarnos en:</p>
         <ul>
-            <li><strong>Correo electrónico:</strong> [Correo electrónico de contacto]</li>
-            <li><strong>Teléfono:</strong> [Número de teléfono]</li>
-            <li><strong>Dirección física:</strong> [Dirección física de la clínica]</li>
+            <li><strong>Correo electrónico:</strong> <?= $email ?></li>
+            <li><strong>Teléfono:</strong> 633088655</li>
+            <li><strong>Dirección física:</strong> C. Pintor Sorolla, 19, 46790 Jeresa, Valencia</li>
         </ul>
 
         <h2>Consentimiento del Usuario</h2>
         <p>Al utilizar nuestros servicios, declaras que has leído y entendido esta Política de Privacidad, y consientes el tratamiento de tus datos de acuerdo con los términos aquí expuestos.</p>
+
+        <?php
+        if ($params) {
+            $dt1 = new DateTime($dts->fecha_envio);
+            $time_diff = $dt1->diff(new DateTime());
+            $mins = ($time_diff->days * 24 * 60) + ($time_diff->h * 60) + $time_diff->i;
+            if ($mins < 9240 && !Usuario::getPrivacidad($dts->id)->acepta_rgpd) {
+        ?>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" onchange="disableSubmitBtn()" id="acceptPolicy" name="acceptPolicy">
+                        He leído y acepto la <a href="#">Política de Privacidad</a>.
+                    </label>
+                    <div id="error-message" class="error" style="display:none;">Debes aceptar las políticas de privacidad para continuar.</div>
+                </div>
+                <button type="button" id="submitBtn" disabled onclick="aceptarTerminosYCondiciones('<?= $dts->id ?>','<?= $_SERVER['REMOTE_ADDR']; ?>')" class="btn">Aceptar y continuar</button>
+        <?php
+            }
+        }
+        ?>
     </div>
 
 </body>

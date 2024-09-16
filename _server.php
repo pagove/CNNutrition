@@ -3,7 +3,7 @@ include_once("clases.php");
 
 
 $dts = json_decode(file_get_contents("php://input"), true);
-//Logger::haz_log("GOVE", var_export($dts, true));
+Logger::haz_log("GOVE", var_export($dts, true));
 
 switch ($dts["function"]) {
     case "compruebaLogin":
@@ -37,6 +37,14 @@ switch ($dts["function"]) {
             $dts["aversion"]
         );
         break;
+    case "aceptarTerminosYCondiciones":
+        aceptarTerminosYCondiciones($dts["id_usuario"], $dts["ip_usuario"]);
+        break;
+}
+
+function aceptarTerminosYCondiciones($id_usuario, $ip_usuario)
+{
+    die(json_encode(Usuario::setPrivacidad($id_usuario, $ip_usuario)));
 }
 
 function registraUsuario($nombre, $ap1, $ap2, $email, $tel, $fecha_nac, $sexo, $altura, $tarifa, $passwd, $patologias, $aversiones)
