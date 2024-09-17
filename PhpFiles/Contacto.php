@@ -75,6 +75,9 @@ include_once("clases.php");
 							</div>
 						</div>
 					</div>
+					<br>
+					<p><a href="/PhpFiles/PoliticasPrivacidad.php" target="_blank">Políticas de privacidad</a></p>
+					<br>
 				</div>
 			</div>
 		</div>

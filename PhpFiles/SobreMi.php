@@ -22,8 +22,13 @@ include_once("clases.php");
                     <div class="col-5"> <img src="/web_images/sobreMi/Carlos.jpg" class="img-fluid" alt="..."> </div>
                     <div class="col-5">
                         <br>
-                        <p>
-                        </p> columns continue along the new line. Subsequent columns continue along the new line. Subsequent columns continue along the new line.
+                        <p style="text-align: justify;">
+                            Soy graduado en Dietética y Nutrición por la Universidad de Valencia, y desde siempre he tenido una gran pasión por
+                            el impacto positivo que una buena alimentación puede tener en la salud. Tras varios años de experiencia en el sector,
+                            he decidido crear esta clínica para ofrecer un enfoque cercano y personalizado, ayudando a mis pacientes a alcanzar sus
+                            objetivos nutricionales de manera sostenible. Mi objetivo es guiar a cada persona hacia un estilo de vida más saludable
+                            y equilibrado, basado en ciencia y adaptado a sus necesidades individuales.
+                        </p>
                     </div>
                 </div>
             </div>

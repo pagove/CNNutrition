@@ -6,7 +6,7 @@ $params = array_key_exists("param", $_GET) ? $_GET["param"] : false;
 $dts = $params ? json_decode(Utilidades::desencriptar($params)) : false;
 
 $email = DatosConexion::getDatosEmail()->usr;
-
+$nombreClinica = "CNNutrition";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -15,7 +15,7 @@ $email = DatosConexion::getDatosEmail()->usr;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Política de Privacidad - [Nombre de la Clínica]</title>
+    <title>Política de Privacidad - <?= $nombreClinica ?></title>
     <script src="../JS/funcionalidad.js"></script>
     <script>
         function aceptarTerminosYCondiciones(id_usuario, ip_usuario) {
@@ -127,7 +127,7 @@ $email = DatosConexion::getDatosEmail()->usr;
     <div class="container">
         <h1>Política de Privacidad</h1>
         <!-- <p><strong>Última actualización:</strong> [Fecha]</p> -->
-        <p>En <strong>CNNutrition</strong>, estamos comprometidos con la protección de la privacidad y la seguridad de los datos personales de nuestros usuarios, pacientes y empleados. Esta Política de Privacidad describe cómo recopilamos, utilizamos y protegemos la información personal que nos proporcionas al interactuar con nosotros.</p>
+        <p>En <strong><?= $nombreClinica ?></strong>, estamos comprometidos con la protección de la privacidad y la seguridad de los datos personales de nuestros usuarios, pacientes y empleados. Esta Política de Privacidad describe cómo recopilamos, utilizamos y protegemos la información personal que nos proporcionas al interactuar con nosotros.</p>
 
         <h2>1. Responsable del Tratamiento de los Datos</h2>
         <p>El responsable del tratamiento de tus datos personales es:</p>
