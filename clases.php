@@ -16,14 +16,30 @@ if ($os == "WINNT") {
 
 foreach ($directories as $dir) {
     $path .= $separadores . $_ruta . $barras . $dir;
-    Logger::haz_log("GOVE", $path);
 }
+Logger::haz_log("include_path", $path);
 set_include_path($path);
 
 function autoIncludeClases($class)
 {
+    /*
+    $back_trace = debug_backtrace();
+    foreach ($back_trace as $trace) {
+        $str = "";
+        foreach ($trace as $k => $v) {
+            $str .= $k . ":" . $v . "  ";
+        }
+        Logger::haz_log("autoIncludeClases", $str);
+    }*/
     Logger::haz_log("autoIncludeClases", "$class.php");
     include $class . ".php";
 }
 
 spl_autoload_register("autoIncludeClases");
+
+function error_handler($e)
+{
+    Logger::haz_log("Error", json_encode($e));
+}
+
+set_exception_handler("error_handler");

@@ -18,7 +18,6 @@ include_once("clases.php");
         <hr id="hrPerTarifa">
         <div class="row align-items-center">
             <?php
-
             $tarifas = Tarifa::getTarifas();
             foreach ($tarifas as $t) {
             ?>
