@@ -630,27 +630,6 @@ function nuevaTarifa() {
 function Cargar(url, capa, ruta_x_defecto = true) {
 	if (ruta_x_defecto) url = "PhpFiles/" + url;
 	var contenido = document.getElementById(capa);
-	var conexion = new XMLHttpRequest(); // Cambiado nuevaConexion() por XMLHttpRequest
-
-	conexion.open("GET", url, true);
-	conexion.onreadystatechange = function () {
-		if (conexion.readyState == 4) {
-			if (conexion.status == 200) {
-				contenido.innerHTML = conexion.responseText;
-				invokeScript(document.getElementById(capa)); // Asume que invokeScript existe
-			} else {
-				console.error("Error: " + conexion.status); // Manejo básico de errores
-			}
-		}
-	};
-	conexion.send(null);
-}
-
-
-/*
-function Cargar(url, capa, ruta_x_defecto = true) {
-	if (ruta_x_defecto) url = "PhpFiles/" + url;
-	var contenido = document.getElementById(capa);
 	var conexion = nuevaConexion();
 	conexion.open("GET", url, true);
 	conexion.onreadystatechange = function () {
@@ -662,7 +641,7 @@ function Cargar(url, capa, ruta_x_defecto = true) {
 	}
 	conexion.send(null);
 }
-*/
+
 function nuevaConexion() {
 	var xmlhttp = false;
 	try {
