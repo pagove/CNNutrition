@@ -22,6 +22,7 @@ set_include_path($path);
 
 function autoIncludeClases($class)
 {
+    Logger::haz_log("autoIncludeClases", "$class.php");
     include $class . ".php";
 }
 
