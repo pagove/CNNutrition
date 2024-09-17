@@ -2,6 +2,25 @@
 header("content-type: text/plain"); // si no es ver html
 include_once "clases.php";
 
+
+$inicial = 1000 * 2;
+$porcentaje = 8 / 365;
+echo $porcentaje . "\n";
+$sumatorio_mensual = 100 * 2;
+for ($i = 0; $i < 30; $i++) { //30 años
+    for ($j = 0; $j < 12; $j++) { // 12 meses al año
+        for ($t = 0; $t < 30; $t++) { // 30 dias al mes
+            echo $inicial . "\n";
+            $inicial += (($inicial * $porcentaje) / 100);
+        }
+
+        $inicial += $sumatorio_mensual;
+    }
+}
+
+echo $inicial / 2;
+
+die();
 $date = date("Y-m-d");
 $tc = 22;
 $obd = Conexion::conecta();
