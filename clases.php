@@ -23,15 +23,7 @@ set_include_path($path);
 
 function autoIncludeClases($class)
 {
-    /*
-    $back_trace = debug_backtrace();
-    foreach ($back_trace as $trace) {
-        $str = "";
-        foreach ($trace as $k => $v) {
-            $str .= $k . ":" . $v . "  ";
-        }
-        Logger::haz_log("autoIncludeClases", $str);
-    }*/
+    Logger::haz_log("autoIncludeClases", __FILE__);
     Logger::haz_log("autoIncludeClases", "$class.php");
     include $class . ".php";
 }
