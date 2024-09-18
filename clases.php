@@ -2,8 +2,9 @@
 include_once("Clases/Logger.php");
 //Modificando la ruta de inclusión path
 $_ruta = dirname(__FILE__);
-Logger::haz_log("autoIncludeClases", __FILE__);
-$directories = array("Clases", "Clases/Mail", "Modulos");
+Logger::haz_log("autoIncludeClases__FILE__", __FILE__);
+$document_root = $_SERVER['DOCUMENT_ROOT'];
+$directories = array($document_root, "Clases", "Clases/Mail", "Modulos");
 $path = get_include_path();
 
 $os = PHP_OS;
