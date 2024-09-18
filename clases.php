@@ -27,7 +27,7 @@ function autoIncludeClases($class)
 {
     Logger::haz_log("autoIncludeClases", __FILE__);
     Logger::haz_log("autoIncludeClases", "$class.php");
-    include $class . ".php";
+    include_once $class . ".php";
 }
 
 spl_autoload_register("autoIncludeClases");
