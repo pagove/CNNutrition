@@ -2,6 +2,9 @@
 header("content-type: text/plain"); // si no es ver html
 include_once "clases.php";
 
+echo $_SERVER['DOCUMENT_ROOT'];
+
+die();
 
 $inicial = 1000 * 2;
 $porcentaje = 8 / 365;

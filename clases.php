@@ -4,8 +4,7 @@ include_once("Clases/Logger.php");
 $_ruta = dirname(__FILE__);
 Logger::haz_log("autoIncludeClases__FILE__", __FILE__);
 $document_root = $_SERVER['DOCUMENT_ROOT'];
-$directories = array($document_root, "Clases", "Clases/Mail", "Modulos");
-$path = get_include_path();
+$directories = array("Clases", "Clases/Mail", "Modulos");
 
 $os = PHP_OS;
 
@@ -15,6 +14,8 @@ if ($os == "WINNT") {
     $barras = "\\";
     $separadores = ";";
 }
+
+$path = get_include_path() . $separadores . $document_root;
 
 foreach ($directories as $dir) {
     $path .= $separadores . $_ruta . $barras . $dir;
