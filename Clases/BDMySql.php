@@ -51,7 +51,11 @@ class BDMySql
 
     public function getObject($sql)
     {
-        return self::getAll($sql, "", true)[0];
+        $r = self::getAll($sql, "", true);
+        if (count($r) > 0) {
+            return self::getAll($sql, "", true)[0];
+        }
+        return null;
     }
     public function getAll($sql, $indice = "", $as_object = false)
     {
