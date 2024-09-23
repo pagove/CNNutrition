@@ -28,10 +28,10 @@ if (isset($_SESSION["id_usuario"])) {
             jsonAjax("_server.php?", dts, (r) => {
                 if (r.ok) {
                     if (r.rol != 0) {
+                        document.getElementById("perfilButton").style.display = "";
                         Cargar('InicioCliente.html?id_usuario=' + r.id, 'cuerpo');
                     } else {
                         Cargar('InicioLogin.php?id_usuario=' + r.id, 'cuerpo');
-                        document.getElementById("perfilButton").style.display = "none";
                     }
                     localStorage.setItem("CNNutrition_email", document.getElementById("email").value);
                     document.getElementById("loginButton").style.display = "none";
