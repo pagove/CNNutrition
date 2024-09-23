@@ -105,7 +105,6 @@ session_start();
 				<select class="form-select" id="selTarifa" name="tarifa" required>
 					<?php
 					$tarifas = Tarifa::getTarifas();
-					Logger::haz_log("GOVE", var_export($tarifas, true));
 					foreach ($tarifas as $i => $t) {
 						if ($i == 0) {
 					?>
@@ -140,18 +139,6 @@ session_start();
 				<textarea class="form-control" id="areaAversion" name="aversion" style="height: 100px"></textarea>
 			</div>
 		</div>
-		<!--
-		<div class="row">
-			<div class="col-12">
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="checkConformidad" required>
-					<label class="form-check-label" for="invalidCheck2">
-						<a onclick="abrirPoliticasPrivacidad()" href="">Estoy de acuerdo con los términos y las condiciones</a>
-					</label>
-				</div>
-			</div>
-		</div>
-				-->
 		<div class="row" style="margin-top: 5px;">
 			<div class="col-12">
 				<button type="button" onclick="registraUsuario()" class="btn btn-outline-dark marginLeft20">Guardar</button>
