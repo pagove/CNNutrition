@@ -8,7 +8,7 @@ function jsonAjax(url, data, callback) {
 	})
 		.then(response => response.json())
 		.then(jsonData => {
-			callback(jsonData); // Llama a la función de devolución de llamada con los datos JSON
+			callback(jsonData);
 		})
 		.catch(error => {
 			console.error('Error en la solicitud AJAX:', error);
