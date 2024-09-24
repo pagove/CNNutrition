@@ -193,7 +193,6 @@ class BDMySql
         }
     }
 
-
     public function ejecuta2($sql, &$afectadas)
     {
         try {
@@ -294,11 +293,9 @@ class BDMySql
             return false;
         }
         foreach ($metaData as $col => $m) {
-            echo "\n";
             /** Comprobar defaults o autoincrements */
             if (!array_key_exists($col, $datos) && (isset($m->Default) || isset($m->Extra))) continue;
             /** Campo no indica en los datos */
-            //if (!@$datos[$col]) {
             if (!array_key_exists($col, $datos)) {
                 if ($m->Null == "NO") {
                     $ok = false;
