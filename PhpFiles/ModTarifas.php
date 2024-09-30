@@ -1,8 +1,6 @@
 <html lang="en">
 <?php
 include_once("clases.php");
-//require("/volume1/web/phpBD/baseDatos.php");
-session_start();
 ?>
 
 <head>
