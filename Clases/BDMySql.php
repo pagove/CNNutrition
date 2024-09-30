@@ -10,6 +10,7 @@ class BDMySql
     {
         try {
             $this->con = new PDO($strCon, $user, $pass);
+            $this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             Logger::haz_log(__CLASS__, $e->getMessage());
             die("Error conectando a la base de datos: " . $e->getMessage());
@@ -183,7 +184,9 @@ class BDMySql
     public function ejecuta($sql)
     {
         try {
+            $this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             if ($this->con->exec($sql) !== false) return true;
+            return false;
         } catch (PDOException $e) {
             $msg = $e->getCode() . " , " . $e->getMessage();
             Logger::haz_log(__CLASS__, $msg);
