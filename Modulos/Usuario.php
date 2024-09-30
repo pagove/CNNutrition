@@ -174,6 +174,54 @@ class Usuario
         }
     }
 
+    public static function editarUsuario($id_usuario, $nombre, $ap1, $ap2, $email, $tel, $nacimiento, $sexo, $altura, $tarifa, $patologias, $aversion)
+    {
+        $obd = Conexion::conecta();
+        $sql = "update Usuarios set nombre='$nombre', apellido1='$ap1',apellido2='$ap2', email='$email', movil='$tel', fechaNacimiento='$nacimiento',
+                sexo='$sexo',altura='$altura', id_tarifa=$tarifa, patologias='$patologias', aversiones='$aversion'
+                where id=$id_usuario";
+        $ok = $obd->ejecuta($sql);
+        $msg = $ok ? "" : $obd->ultimo_error;
+        return new TRetorno($ok, $msg, null, self::$SYSLOG);
+    }
+
+    public static function enviarMailRGPD($email, $id, $nombre, $ap1, $ap2)
+    {
+        if (DatosConexion::imRemote() || DatosConexion::imTest()) {
+            $email = "pablogomve@gmail.com";
+        }
+        $extra_params = Utilidades::encriptar(json_encode((object)array(
+            "id" => $id,
+            "nombre" => $nombre,
+            "ap1" => $ap1,
+            "ap2" => $ap2,
+            "fecha_envio" => date("Y-m-d H:i:s")
+        )));
+        $urlCesionDatos = DatosConexion::imRemote() ? "localhost/PhpFiles/PoliticasPrivacidad.php" : "http://gove.synology.me/PhpFiles/PoliticasPrivacidad.php";
+        $urlCesionDatos = $urlCesionDatos . "?param=$extra_params";
+
+        $html = "<p>Estimado/a $nombre $ap1 $ap2,</p>
+                <p>Esperamos que se encuentre bien.</p>
+                <p>Le escribimos para informarle que hemos actualizado nuestras <strong>Políticas de Privacidad</strong>
+                y queremos asegurarnos de que esté al tanto de los cambios. Para seguir ofreciendo nuestros servicios,
+                necesitamos que revise y acepte estas políticas.</p>
+                <p>Puede acceder al documento completo a través del siguiente enlace:</p>
+                <p>
+                <a href=\"$urlCesionDatos\" target=\"_blank\" style=\"color: #007bff; text-decoration: none;\">Ver Políticas de Privacidad</a></p>
+                <p>Le solicitamos que revise cuidadosamente la información..</p>
+                <p>En caso de tener alguna consulta o requerir más información, no dude en ponerse en contacto con nosotros.</p>
+                <p>Agradecemos su tiempo y quedamos atentos a su pronta respuesta.</p>
+                <p>Saludos cordiales,</p>
+                <p>Carlos Nadal Pavía<br>
+                <strong>CNNutrition</strong><br>
+                633088655<br>
+                carlosnapav16@gmail.com<br>
+                carlos.asesoriasnutricion@gmail.com</p>";
+
+        $ret = SendEmail::send($email, "Aceptación de Políticas de Privacidad Actualizadas", "", $html);
+        return $ret;
+    }
+
     public static function getPrivacidad($id_usuario)
     {
         $obd = Conexion::conecta();

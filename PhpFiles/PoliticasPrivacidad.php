@@ -4,6 +4,10 @@ include_once("clases.php");
 
 $params = array_key_exists("param", $_GET) ? $_GET["param"] : false;
 $dts = $params ? json_decode(Utilidades::desencriptar($params)) : false;
+if ($dts) {
+    $_u = Usuario::getDatosGenerales($dts->id);
+    if (!$_u) die("<h2>No se ha encontrado el usuario</h2>.");
+}
 
 $email = DatosConexion::getDatosEmail()->usr;
 $nombreClinica = "CNNutrition";
@@ -28,6 +32,7 @@ $nombreClinica = "CNNutrition";
                 };
                 jsonAjax("../_server.php", datos, (r) => {
                     if (r.ok) {
+                        /**TODO cambiar por alert y hacer que habra un callback */
                         alert("Se han aceptado las politicas de privacidad correctamente", () => {
                             window.location.reload();
                         });

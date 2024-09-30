@@ -69,7 +69,7 @@ $tarifa = Usuario::getTarifaUsuario($id_usuario);
             <div class="row">
                 <div class="col-md-4 autoMargin centrarTexto">
                     <img src="web_images/profileIco.ico" class="img-fluid" alt="...">
-                    <button type="button" class="btn btn-outline-dark marginTop20" onclick="Cargar('NuevoCliente.html', 'cuerpo')">Editar informacion</button>
+                    <button type="button" class="btn btn-outline-dark marginTop20" onclick="Cargar('EditarCliente.php?id_usuario=' + <?= $id_usuario ?>, 'cuerpoLogin')">Editar informacion</button>
                 </div>
                 <div class="col">
                     <div class="row">

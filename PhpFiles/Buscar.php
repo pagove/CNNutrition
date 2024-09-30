@@ -11,7 +11,28 @@ session_start();
     <link rel="stylesheet" href="/css/estilos.css">
     <title>&nbsp;</title>
     <script>
-        function buscarEmpleado() {
+        function enviarMailRGPD(email, id, nombre, ap1, ap2) { // se llama desde la función listarUsuarios.
+            debugger;
+            var dts = {
+                function: "enviarMailRGPD",
+                email: email,
+                id_usuario: id,
+                nombre: nombre,
+                ap1: ap1,
+                ap2: ap2
+            };
+
+            jsonAjax("_server.php", dts, (r) => {
+                if (r.ok) {
+                    alert("Se ha enviado el correo correctamente");
+                } else {
+                    alert(r.msg);
+                }
+            });
+
+        }
+
+        function listarUsuarios() {
             document.getElementById("tabla_usuarios").style.display = "none";
             document.getElementById("sin_resultado").style.display = "none";
             var dts = {
@@ -23,19 +44,33 @@ session_start();
                 tel: document.getElementById("tel").value
             };
             jsonAjax("_server.php?", dts, (r) => {
-                debugger;
                 if (r.length > 0) {
                     document.getElementById("tabla_usuarios").style.display = "";
+                    document.getElementById("sin_resultado").style.display = "none";
                     var tbody = "";
                     r.forEach((u) => {
                         tbody += "<tr>";
                         tbody += "<th scope='row'>" + u.nombre + " " + u.apellido1 + " " + u.apellido2 + "</th>";
                         tbody += "<td>" + u.movil + "</td>";
                         tbody += "<td>" + u.email + "</td>";
-                        tbody += "<td><button type='button' onclick='verPerfilUsuario(" + u.id + ")' class='btn btn-outline-dark'>Ver</button></td>";
+                        tbody += "<td>";
+                        if (u.acepta_rgpd) {
+                            tbody += "<button type='button' disabled class='btn btn-outline-dark'>Envia RGPD</button>";
+                        } else {
+                            tbody += "<button type='button' onclick='enviarMailRGPD(\"" + u.email + "\", \"" + u.id + "\", \"" + u.nombre + "\", \"" + u.apellido1 + "\", \"" + u.apellido2 + "\")' class='btn btn-outline-dark'>Envia RGPD</button>";
+                        }
+                        tbody += "</td><td>";
+                        if (u.acepta_rgpd) {
+                            tbody += "<button type='button' onclick='verPerfilUsuario(" + u.id + ")' class='btn btn-outline-dark'>Ver</button>";
+                        } else {
+                            tbody += "<button type='button' disabled class='btn btn-outline-dark'>Ver</button>";
+                        }
+                        tbody += "</td>";
+
                     });
                     document.getElementById("lista").innerHTML = tbody;
                 } else {
+                    document.getElementById("tabla_usuarios").style.display = "none";
                     document.getElementById("sin_resultado").style.display = "";
                 }
 
@@ -83,28 +118,26 @@ session_start();
         </div>
         <div class="row marginTop10">
             <div class="col-12">
-                <button type="button" onclick="buscarEmpleado()" class="btn btn-outline-dark marginLeft20"> Buscar </button>
+                <button type="button" onclick="listarUsuarios()" class="btn btn-outline-dark marginLeft20"> Buscar </button>
             </div>
         </div>
 
-        <table id="tabla_usuarios" class="table table-striped marginTop20">
+        <table id="tabla_usuarios" class="table table-striped marginTop20" style="display: none;">
             <thead>
                 <tr>
                     <th scope="col">Nombre</th>
                     <th scope="col">Móvil</th>
                     <th scope="col">Correo</th>
-                    <th scope="col">Acción</th>
+                    <th scope="col">RGPD</th>
+                    <th scope="col">Ver perfil</th>
                 </tr>
             </thead>
             <tbody id="lista" class="overflow-auto">
             </tbody>
-
-            <div id="sin_resultado" class="alert alert-danger marginTop20" role="alert">
-                No se han encontrado resultados.
-            </div>
-            <?php
-
-            ?>
+        </table>
+        <div style="display: none;" id="sin_resultado" class="alert alert-danger marginTop20" role="alert">
+            No se han encontrado resultados.
+        </div>
     </div>
 </body>
 

@@ -37,9 +37,39 @@ switch ($dts["function"]) {
             $dts["aversion"]
         );
         break;
+        aceptarTerminosYCondiciones($dts["id_usuario"], $dts["ip_usuario"]);
     case "aceptarTerminosYCondiciones":
         aceptarTerminosYCondiciones($dts["id_usuario"], $dts["ip_usuario"]);
         break;
+    case "editarUsuario":
+        editarUsuario(
+            $dts["id_usuario"],
+            $dts["nombre"],
+            $dts["ap1"],
+            $dts["ap2"],
+            $dts["email"],
+            $dts["tel"],
+            $dts["nacimiento"],
+            $dts["sexo"],
+            $dts["altura"],
+            $dts["tarifa"],
+            $dts["patologias"],
+            $dts["aversion"]
+        );
+        break;
+    case "enviarMailRGPD":
+        enviarMailRGPD($dts["email"], $dts["id_usuario"], $dts["nombre"], $dts["ap1"], $dts["ap2"]);
+        break;
+}
+
+function enviarMailRGPD($email, $id_usuario, $nombre, $ap1, $ap2)
+{
+    die(json_encode(Usuario::enviarMailRGPD($email, $id_usuario, $nombre, $ap1, $ap2)));
+}
+
+function editarUsuario($id_usuario, $nombre, $ap1, $ap2, $email, $tel, $nacimiento, $sexo, $altura, $tarifa, $patologias, $aversion)
+{
+    die(json_encode(Usuario::editarUsuario($id_usuario, $nombre, $ap1, $ap2, $email, $tel, $nacimiento, $sexo, $altura, $tarifa, $patologias, $aversion)));
 }
 
 function aceptarTerminosYCondiciones($id_usuario, $ip_usuario)
