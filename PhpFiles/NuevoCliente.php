@@ -19,18 +19,18 @@ session_start();
 			var regex_email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 			var dts = {
 				function: "registraUsuario",
-				nombre: document.getElementById("txtNombre").value,
-				ap1: document.getElementById("txtAp1").value,
-				ap2: document.getElementById("txtAp2").value,
-				email: document.getElementById("txtEmail").value,
-				tel: document.getElementById("numberTel").value,
-				nacimiento: document.getElementById("dateNac").value,
-				sexo: document.getElementById("selSexo").value,
-				altura: document.getElementById("numberAltura").value,
-				tarifa: document.getElementById("selTarifa").value,
-				passwd: document.getElementById("textPasswd").value,
-				patologias: document.getElementById("areaPatologias").value,
-				aversion: document.getElementById("areaAversion").value
+				nombre: get("txtNombre"),
+				ap1: get("txtAp1"),
+				ap2: get("txtAp2"),
+				email: get("txtEmail"),
+				tel: get("numberTel"),
+				nacimiento: get("dateNac"),
+				sexo: get("selSexo"),
+				altura: get("numberAltura"),
+				tarifa: get("selTarifa"),
+				passwd: get("textPasswd"),
+				patologias: get("areaPatologias"),
+				aversion: get("areaAversion")
 			};
 			if (!dts.nombre) return alert("El campo 'nombre' es obligatorio");
 			if (!dts.ap1 || !dts.ap2) return alert("Los apellidos son obligatorios");
@@ -46,7 +46,6 @@ session_start();
 
 			jsonAjax("_server.php", dts, (r) => {
 				if (r.ok) {
-					debugger;
 					Cargar('Buscar.php', 'cuerpoLogin')
 				} else {
 					alert(r.msg);
