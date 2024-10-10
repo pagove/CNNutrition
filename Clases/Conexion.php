@@ -9,7 +9,7 @@ class Conexion
     public static function conecta()
     {
 
-        if (!@self::$pool[Utilidades::getPID()]) {
+        if (array_key_exists(Utilidades::getPID(), self::$pool)) {
             try {
                 $d = DatosConexion::getDatosConexion();
                 $strCon = "mysql:host=$d->host;dbname=$d->database";
