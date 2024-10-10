@@ -4,12 +4,15 @@ class Logger
 {
     private static $directorio_var_log = '/var/log';
     private static $archivo_en_var_log =  "/var/log/messages.log";
-
-    public static function haz_log($clave, $message)
+    private static $levels = array("", "ERROR", "WARNING", "DEBUG");
+    public static function haz_log($clave, $message, $level = 0)
     {
+        if (($level < 0 || $level > 3)) {
+            self::haz_log($clave, $message);
+        }
         self::comprobarFichero();
         $timestamp = date('Y-m-d H:i:s');
-        $logEntry = "[" . $timestamp . "] $clave: " . $message . PHP_EOL;
+        $logEntry = "[" . self::$levels[$level] . "]" . "[" . $timestamp . "] $clave: " . $message . PHP_EOL;
 
         // Escribir el mensaje en el archivo de logs
         if (!error_log($logEntry, 3, self::$archivo_en_var_log)) {
