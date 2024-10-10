@@ -99,4 +99,41 @@ class Utilidades
 
         return openssl_decrypt($encrypted, $metodo_cifrado, DatosConexion::getAESpasswd(), 0, $iv);
     }
+
+    public static function array2set($v, $in = true, $parentesis = true, $comillas = true)
+    {
+        if ($comillas) {
+            $v = array_map(function ($el) {
+                return "'" . $el . "'";
+            }, $v);
+        }
+
+        $v = implode(",", $v);
+        $v = $parentesis ? "($v)" : $v;
+        $v = $in ? " in $v " : $v;
+        return $v;
+    }
+
+    public static function getBacklogTrace($tag = "")
+    {
+        $trace = debug_backtrace();
+        $ret = "";
+        foreach ($trace as $fn) {
+            $class = array_key_exists("class", $fn) ? $fn["class"] . "::" : "";
+            $fun_args =  array_key_exists("args", $fn) && array_key_exists("function", $fn) ? $fn["function"] . "(" .   self::array2set($fn["args"], false, false) . ")" : "";
+            $line = array_key_exists("line", $fn) ? "ln(" . $fn["line"] . ")" : "";
+            $file = array_key_exists("file", $fn) ? $fn["file"] . ":" : "";
+            if ($tag) {
+                $err =  "$file $line $class $fun_args ";
+                if ($err) {
+                    Logger::haz_log($tag, $err);
+                } else {
+                    Logger::haz_log("Utilidades::getBacklogTrace($tag)", var_export($fn, true));
+                }
+            } else {
+                $ret .= "$file $line $class $fun_args \n";
+            }
+        }
+        if (!$tag) return $ret;
+    }
 }
