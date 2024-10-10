@@ -295,6 +295,7 @@ class BDMySql
             $obd->ultimo_error = "Returning col ($returning) not in $tabla";
             return false;
         }
+        //if (is_object($datos)) $datos = array($datos);
         foreach ($metaData as $col => $m) {
             /** Comprobar defaults o autoincrements */
             if (!array_key_exists($col, $datos) && (isset($m->Default) || isset($m->Extra))) continue;

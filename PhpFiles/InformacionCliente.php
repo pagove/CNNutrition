@@ -24,7 +24,7 @@ $id_usuario = $_GET["id_usuario"];
                 if (!r.ok) {
                     alert(r.msg);
                 } else {
-                    Cargar("./InformacionCliente.php?id_usuario=" + id_usuario, "cuerpo");
+                    Cargar("./InformacionCliente.php?id_usuario=" + id_usuario, "cuerpoLogin");
                 }
             });
         }
@@ -39,13 +39,49 @@ $id_usuario = $_GET["id_usuario"];
         if (confirm) {
             jsonAjax("_server.php", dts, (r) => {
                 if (r.ok) {
-                    Cargar("./PhpFiles/InformacionCliente.php?id_usuario=" + id_usuario, "cuerpo");
+                    Cargar("./InformacionCliente.php?id_usuario=" + id_usuario, "cuerpoLogin");
                 } else {
                     alert("No se ha podido eliminar la información " + r.msg);
                 }
             });
         }
 
+    }
+
+    function guardarPlieguesCutaneos(id_usuario) {
+        var fecha = eur2iso(get("inDatePliegues"));
+        var tricipital = get("inTricipital");
+        var subescapular = get("inSubescapular");
+        var supraliaco = get("inSupraliaco");
+        var abdominal = get("inAbdominal");
+        var muslo = get("inMuslo");
+        var gemelo = get("inGemelo");
+        if (!fecha) return alert("El campo fecha es obligatorio");
+        if (!tricipital) return alert("El campo tricipital es obligatorio");
+        if (!subescapular) return alert("El campo subescapular es obligatorio");
+        if (!supraliaco) return alert("El campo supraliaco es obligatorio");
+        if (!abdominal) return alert("El campo abdominal es obligatorio");
+        if (!muslo) return alert("El campo muslo es obligatorio");
+        if (!gemelo) return alert("El campo gemelo es obligatorio");
+
+        var dts = {
+            function: "guardarPlieguesCutaneos",
+            id_usuario: id_usuario,
+            fecha: fecha,
+            tricipital: tricipital,
+            subescapular: subescapular,
+            supraliaco: supraliaco,
+            abdominal: abdominal,
+            muslo: muslo,
+            gemelo: gemelo
+        };
+        jsonAjax("_server.php", dts, (r) => {
+            if (!r.ok) {
+                alert(r.msg);
+            } else {
+                Cargar("./InformacionCliente.php?id_usuario=" + id_usuario, "cuerpoLogin");
+            }
+        });
     }
 </script>
 <?php
@@ -129,7 +165,7 @@ $tarifa = Usuario::getTarifaUsuario($id_usuario);
                     <form class="row g-3 needs-validation" novalidate>
                         <div class="col-md-3">
                             <label for="validationCustom01" class="form-label"><b>Fecha</b></label>
-                            <input id="fechaDG" type="text" class="form-control" id="validationCustom01" value="<?php echo date("d/m/Y") ?>" readonly>
+                            <input id="fechaDG" type="text" class="form-control" id="validationCustom01" value="<?= date("d/m/Y") ?>" readonly>
                         </div>
                         <div class="col-md-3">
                             <label for="validationCustom01" class="form-label"><b>Peso</b></label>
@@ -145,7 +181,7 @@ $tarifa = Usuario::getTarifaUsuario($id_usuario);
                         </div>
 
                         <div class="col-12">
-                            <button type="button" class="btn btn-outline-dark" onclick="guardarDatosGeneralesJS(<?php echo $id_usuario ?>)">Guardar</button>
+                            <button type="button" class="btn btn-outline-dark" onclick="guardarDatosGeneralesJS(<?= $id_usuario ?>)">Guardar</button>
                         </div>
                     </form>
                 </div>
@@ -184,36 +220,36 @@ $tarifa = Usuario::getTarifaUsuario($id_usuario);
                 <div class="marginTop20">
                     <form class="row g-3 needs-validation" novalidate>
                         <div class="col-md-3">
-                            <label for="validationCustom01" class="form-label"><b>Fecha</b></label>
-                            <input type="text" class="form-control" id="validationCustom01" value="19/03/2022" readonly>
+                            <label for="inDatePliegues" class="form-label"><b>Fecha</b></label>
+                            <input type="text" class="form-control" id="inDatePliegues" value="<?= date("d/m/Y") ?>" readonly>
                         </div>
                         <div class="col-md-3">
-                            <label for="validationCustom01" class="form-label"><b>Tricipital 35</b></label>
-                            <input type="number" class="form-control" id="validationCustom01" value="55" required>
+                            <label for="inTricipital" class="form-label"><b>Tricipital 35</b></label>
+                            <input type="number" class="form-control" id="inTricipital" value="55" required>
                         </div>
                         <div class="col-md-3">
-                            <label for="validationCustom02" class="form-label"><b>Subescapular</b></label>
-                            <input type="number" step="0.01" class="form-control" id="validationCustom02" value="11.50" required>
+                            <label for="inSubescapular" class="form-label"><b>Subescapular</b></label>
+                            <input type="number" step="0.01" class="form-control" id="inSubescapular" value="11.50" required>
                         </div>
                         <div class="col-md-3">
-                            <label for="validationCustom02" class="form-label"><b>Supralíaco</b></label>
-                            <input type="number" step="0.01" class="form-control" id="validationCustom02" value="Otto" required>
+                            <label for="inSupraliaco" class="form-label"><b>Supralíaco</b></label>
+                            <input type="number" step="0.01" class="form-control" id="inSupraliaco" value="11.50" required>
                         </div>
                         <div class="col-md-4">
-                            <label for="validationCustom01" class="form-label"><b>Abdominal</b></label>
-                            <input type="number" class="form-control" id="validationCustom01" value="55" required>
+                            <label for="inAbdominal" class="form-label"><b>Abdominal</b></label>
+                            <input type="number" class="form-control" id="inAbdominal" value="55" required>
                         </div>
                         <div class="col-md-4">
-                            <label for="validationCustom02" class="form-label"><b>Muslo anterior 38</b></label>
-                            <input type="number" step="0.01" class="form-control" id="validationCustom02" value="11.50" required>
+                            <label for="inMuslo" class="form-label"><b>Muslo anterior 38</b></label>
+                            <input type="number" step="0.01" class="form-control" id="inMuslo" value="11.50" required>
                         </div>
                         <div class="col-md-4">
-                            <label for="validationCustom02" class="form-label"><b>Gemelo</b></label>
-                            <input type="number" step="0.01" class="form-control" id="validationCustom02" value="Otto" required>
+                            <label for="inGemelo" class="form-label"><b>Gemelo</b></label>
+                            <input type="number" step="0.01" class="form-control" id="inGemelo" value="4.50" required>
                         </div>
 
                         <div class="col-12">
-                            <button type="button" class="btn btn-outline-dark">Guardar</button>
+                            <button type="button" onclick="guardarPlieguesCutaneos(<?= $id_usuario ?>)" class="btn btn-outline-dark">Guardar</button>
                         </div>
                     </form>
                 </div>

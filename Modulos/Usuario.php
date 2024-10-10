@@ -89,7 +89,14 @@ class Usuario
         return new TRetorno($ok, $msg);
     }
 
-    public static function guardarPlieguesCutaneos($id_usuario, $tricipital, $subescapular, $supraliaco, $abdominal, $musloAnterior, $gemelo) {}
+    public static function guardarPlieguesCutaneos($id_usuario, $fecha, $tricipital, $subescapular, $supraliaco, $abdominal, $musloAnterior, $gemelo)
+    {
+        $obd = Conexion::conecta();
+        $datos = (object)array("id_usuario" => $id_usuario, "fecha" => $fecha, "tricipital35" => $tricipital, "gemelo" => $gemelo, "musloAnterior" => $musloAnterior, "abdominal" => $abdominal, "subescapular" => $subescapular, "supraliaco" => $supraliaco);
+        $ok = $obd->insert("PlieguesCutaneos", $datos);
+        Logger::haz_log("GOVE", var_export($ok, true));
+        return new TRetorno($ok, $obd->ultimo_error);
+    }
 
     public static function eliminaPliegueCutaneo($id_usuario, $id_pliegue) {}
 

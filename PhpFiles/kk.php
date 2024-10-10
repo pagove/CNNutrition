@@ -3,6 +3,20 @@ header("content-type: text/plain"); // si no es ver html
 include_once "clases.php";
 
 
+function a()
+{
+    b("hola", "como estas");
+}
+function b($palabra1, $palabra2)
+{
+    $palabra1 . " " . $palabra2;
+}
+
+a();
+
+echo Utilidades::getBacklogTrace();
+
+die();
 $params = "Ip9EXi2iNWLmIHpe+uu0VW1aTDRqNk5BcU9hRG5CMEpZOUNwM2tSUGp4SzdRQnZNM3dlTjYySVU5UzlPcSt2V1ptMDdIc3I0ZlJIVWpOc3FVaXBFYVc3OWJ2SU8wNjlMMUR3RllCVkZCZDYwT1B3SzJKY0NUb1JsNUQxMUtZc1lKTlBXaFlpekd4aTJGTlZvcWgyM0hmOUFoUEtVNGMvRDZEUTQ1QT09";
 var_dump(json_decode(Utilidades::desencriptar($params)));
 

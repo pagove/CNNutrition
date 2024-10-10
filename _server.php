@@ -60,6 +60,23 @@ switch ($dts["function"]) {
     case "enviarMailRGPD":
         enviarMailRGPD($dts["email"], $dts["id_usuario"], $dts["nombre"], $dts["ap1"], $dts["ap2"]);
         break;
+    case "guardarPlieguesCutaneos":
+        guardarPlieguesCutaneos(
+            $dts["id_usuario"],
+            $dts["fecha"],
+            $dts["tricipital"],
+            $dts["subescapular"],
+            $dts["supraliaco"],
+            $dts["abdominal"],
+            $dts["muslo"],
+            $dts["gemelo"]
+        );
+        break;
+}
+
+function guardarPlieguesCutaneos($id_usuario, $fecha, $tricipital, $subescapular, $supraliaco, $abdominal, $muslo, $gemelo)
+{
+    die(json_encode(Usuario::guardarPlieguesCutaneos($id_usuario, $fecha, $tricipital, $subescapular, $supraliaco, $abdominal, $muslo, $gemelo)));
 }
 
 function enviarMailRGPD($email, $id_usuario, $nombre, $ap1, $ap2)
