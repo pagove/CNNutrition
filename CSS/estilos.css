@@ -1,0 +1,252 @@
+ /* General */
+
+ .borderSolitRight {
+ 	border-right: solid black 2px;
+ }
+
+ .width100 {
+ 	width: 100%;
+ }
+
+ .grayBackgroundColor {
+ 	background-color: #E2E6E8;
+ }
+
+ .non-display {
+ 	display: none;
+ }
+
+ div.scroll {
+ 	height: 300px;
+ 	overflow-x: hidden;
+ 	overflow-y: auto;
+
+ }
+
+ .autoMargin {
+ 	margin: auto;
+ }
+
+ .noJump {
+ 	display: inline;
+ }
+
+ .textoSubMenu {
+ 	font-size: 17px;
+ 	font-family: sans-serif;
+ 	text-align: center;
+ }
+
+ .textoNavBar {
+ 	font-size: 20px;
+ 	font-family: sans-serif;
+ 	text-align: center;
+ }
+
+ .topPadding10 {
+ 	padding-top: 10px;
+ }
+
+ .paddingLeft10 {
+ 	padding-left: 10px;
+ }
+
+ .allPadding10 {
+ 	padding: 10px;
+ }
+
+ .allPadding20 {
+ 	padding: 20px;
+ }
+
+ .allPadding30 {
+ 	padding: 30px;
+ }
+
+ .allMargin10 {
+ 	margin: 10px;
+ }
+
+ .allMargin20 {
+ 	margin: 20px;
+ }
+
+ .allMargin30 {
+ 	margin: 30px;
+ }
+
+ .allMargin40 {
+ 	margin: 40px;
+ }
+
+ .allMargin50 {
+ 	margin: 50px;
+ }
+
+ .allMargin60 {
+ 	margin: 60px;
+ }
+
+ .marginLeft10 {
+ 	margin-left: 10px;
+ }
+
+ .marginLeft20 {
+ 	margin-left: 20px;
+ }
+
+
+ .marginLeft30 {
+ 	margin-left: 30px;
+ }
+
+
+ .marginLeft40 {
+ 	margin-left: 40px;
+ }
+
+ .marginTop10 {
+ 	margin-top: 10px;
+ }
+
+
+ .marginTop20 {
+ 	margin-top: 20px;
+ }
+
+ .marginTop30 {
+ 	margin-top: 30px;
+ }
+
+
+ .marginTop60 {
+ 	margin-top: 60px;
+ }
+
+ .marginTop100 {
+ 	margin-top: 200px;
+ }
+
+ .marginRight10 {
+ 	margin-right: 10px;
+ }
+
+ .hrPer {
+ 	color: #901e25;
+ 	height: 50px;
+ 	width: 100%;
+ 	text-align: center;
+ }
+
+ .centrarTexto {
+ 	text-align: center;
+ }
+
+ .tamSTD {
+ 	width: 1000px;
+ 	margin-top: 40px;
+ 	margin-bottom: 20px;
+ }
+
+ .bordeRedondoFin {
+ 	border-radius: 15px;
+ 	border: solid black 2px;
+
+ }
+
+ /* index.html */
+ .butonLogin {
+ 	color: white;
+ 	background-color: #212529;
+ 	border: none;
+ }
+
+ /* Inicio.html */
+ .textoGlobo {
+ 	font-family: sans-serif;
+ 	font-size: 120%;
+ 	font-style: italic;
+ }
+
+ .floatRight {
+ 	float: right;
+ 	margin-right: 30px;
+ 	margin-top: 160px;
+ }
+
+ .floatLeft {
+ 	float: left;
+ 	margin-left: 30px;
+ 	margin-top: 160px;
+ }
+
+ .imgGlobo {
+ 	border-radius: 50%;
+ 	height: 120px;
+ 	width: 120px;
+ }
+
+ .tamImagenCarousel {
+ 	width: 100%;
+ 	height: 450px;
+ 	border-radius: 30px;
+ }
+
+ .textoUnderCarousel {
+ 	font-family: sans-serif;
+ 	font-size: 120%;
+ 	font-style: italic;
+ 	word-wrap: break-word;
+ 	word-break: normal;
+ }
+
+ .textoUnderCarousel {
+ 	font-family: sans-serif;
+ 	font-size: 120%;
+ 	font-style: italic;
+ 	word-wrap: break-word;
+ 	word-break: normal;
+ }
+
+ #hrPerTarifa {
+ 	color: #901e25;
+ 	height: 2px;
+ 	width: 100%;
+ 	text-align: center;
+ }
+
+
+ .alturaTarifa {
+ 	height: 100%;
+ }
+
+ .tamCardText {
+ 	height: 80px;
+ 	width: 230px;
+ }
+
+ .tamCardImg {
+ 	width: 50%;
+ 	height: 50%;
+ }
+
+ /* Login.html */
+
+ .tamLogin {
+ 	width: 50% !important;
+ }
+
+ /* Buscar */
+
+ .borderListDiv {
+ 	border-radius: 30px;
+ 	border: solid black 1px;
+ }
+
+ /* Estadisticas */
+
+ .numTotalC {
+ 	font-size: 40px;
+ 	font-weight: bold;
+ 	color: green;
+ }
