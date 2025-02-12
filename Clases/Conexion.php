@@ -19,7 +19,7 @@ class Conexion
                     self::$autobegin = false;
                 }
             } catch (PDOException $e) {
-                Logger::haz_log(__CLASS__, $e->getMessage());
+                Logger::err_log(__CLASS__, $e->getMessage());
                 die("Sin conexión a la base de datos:" . $e->getMessage());
             }
         }
@@ -57,7 +57,7 @@ class Conexion
                 self::$pool[Utilidades::getPID()]->setInTransaction(false);
                 return new TRetorno(false, self::$pool[Utilidades::getPID()]->ultimo_error, null, $syslog);
             } else {
-                Logger::haz_log(__CLASS__, "ERROR CON AUTOENDTRANSACTION");
+                Logger::err_log(__CLASS__, "ERROR CON AUTOENDTRANSACTION");
                 die("Error con autoEndTransaction");
             }
         }

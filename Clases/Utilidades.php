@@ -100,8 +100,8 @@ class Utilidades
 
     public static function array2set($v, $in = true, $parentesis = true, $comillas = true)
     {
-        Logger::haz_log("---------------", var_export($v, true));
-        Logger::haz_log("---------------", debug_backtrace());
+        Logger::dev_log("---------------", var_export($v, true));
+        Logger::dev_log("---------------", debug_backtrace());
         if ($comillas) {
             $v = array_map(function ($el) {
                 return "'" . $el . "'";

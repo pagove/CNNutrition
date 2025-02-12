@@ -12,7 +12,7 @@ class BDMySql
             $this->con = new PDO($strCon, $user, $pass);
             $this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            Logger::haz_log(__CLASS__, $e->getMessage());
+            Logger::err_log(__CLASS__, $e->getMessage());
             die("Error conectando a la base de datos: " . $e->getMessage());
         }
     }
@@ -174,7 +174,7 @@ class BDMySql
             $stmt->execute();
         } catch (PDOException $e) {
             $msg = $e->getCode() . " , " . $e->getMessage();
-            Logger::haz_log(__CLASS__, $msg);
+            Logger::err_log(__CLASS__, $msg);
             $this->ultimo_error = $msg;
             return new TRetorno(false, $msg);
         }
@@ -189,8 +189,8 @@ class BDMySql
             return false;
         } catch (PDOException $e) {
             $msg = $e->getCode() . " , " . $e->getMessage();
-            Logger::haz_log(__CLASS__, $msg);
-            Logger::haz_log(__CLASS__, $sql);
+            Logger::err_log(__CLASS__, $msg);
+            Logger::err_log(__CLASS__, $sql);
             $this->ultimo_error = $msg . " -- " . $sql;
             return false;
         }
@@ -203,8 +203,8 @@ class BDMySql
             if ($afectadas !== false) return true;
         } catch (PDOException $e) {
             $msg = $e->getCode() . " , " . $e->getMessage();
-            Logger::haz_log(__CLASS__, $msg);
-            Logger::haz_log(__CLASS__, $sql);
+            Logger::err_log(__CLASS__, $msg);
+            Logger::err_log(__CLASS__, $sql);
             $this->ultimo_error = $msg . " -- " . $sql;
             return false;
         }
@@ -291,7 +291,7 @@ class BDMySql
         $sql = "insert into $tabla (";
         $values = " values (";
         if ($returning && !array_key_exists($returning, $metaData)) {
-            Logger::haz_log("BDMySql_insert", "Returning col ($returning) not in $tabla");
+            Logger::err_log(__CLASS__ . "::insert", "Returning col ($returning) not in $tabla");
             $obd->ultimo_error = "Returning col ($returning) not in $tabla";
             return false;
         }
@@ -398,7 +398,7 @@ class BDMySql
         }
         if (!$ok) {
             $this->ultimo_error = $msg;
-            Logger::haz_log("BDMySql_insert", $msg);
+            Logger::err_log(__CLASS__ . "::insert", $msg);
             return false;
         } else {
             $sql = substr($sql, 0, -1);

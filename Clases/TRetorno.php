@@ -10,14 +10,14 @@ class TRetorno
         $this->ok = $ok;
         $this->msg = $msg;
         if ($datos) {
-            Logger::haz_log("GOVE-------->", var_export($datos, true));
+            Logger::dev_log("GOVE-------->", var_export($datos, true));
             foreach ($datos as $key => $value) {
                 $this->$key = $value;
             }
         }
         if ($save_log && !$ok) {
-            Logger::haz_log($save_log, var_export(debug_backtrace(), true));
-            Logger::haz_log($save_log, var_export($this, true));
+            Logger::err_log($save_log, var_export(debug_backtrace(), true));
+            Logger::err_log($save_log, var_export($this, true));
         }
     }
 }

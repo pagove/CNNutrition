@@ -3,7 +3,6 @@
 
 SIEMPRE COGE EL PATH QUE HAY DENTRO DEL INCLUDE_PATH EN EL SCRIPT DE WEBSTATION
 
-
 include_once("Clases/Logger.php");
 //Modificando la ruta de inclusión path
 $_ruta = dirname(__FILE__);
@@ -31,22 +30,21 @@ set_include_path($path);
 function autoIncludeClases($class)
 {
     include_once $class . ".php";
-    Logger::haz_log("autoIncludeClases", "$class.php");
+    Logger::dev_log("autoIncludeClases", "$class.php");
 }
 
 spl_autoload_register("autoIncludeClases");
 
 function error_handler($e)
 {
-    Logger::haz_log("Handler_Error", json_encode($e));
+    Logger::err_log("Handler_Error", json_encode($e));
 }
 
 set_exception_handler("error_handler");
 
 function miManejadorDeErrores($errno, $errstr, $errfile, $errline)
 {
-    Utilidades::getBacklogTrace("CLASS");
-    Logger::haz_log("CLASS", "Error [$errno]: $errstr en el archivo $errfile en la línea $errline");
+    Logger::err_log("CLASS", "Error [$errno]: $errstr en el archivo $errfile en la línea $errline");
 }
 set_error_handler("miManejadorDeErrores");
 
@@ -54,12 +52,12 @@ function errorFatalHandler()
 {
     $error = error_get_last();
     if ($error !== NULL) {
-        Logger::haz_log("FATAL_ERROR", Utilidades::getBacklogTrace());
+        Logger::err_log("FATAL_ERROR", Utilidades::getBacklogTrace());
         $tipo_error = $error['type'];
         $mensaje_error = $error['message'];
         $archivo_error = $error['file'];
         $linea_error = $error['line'];
-        Logger::haz_log("FATAL_ERROR", "Error fatal [$tipo_error]: $mensaje_error en el archivo $archivo_error en la línea $linea_error");
+        Logger::err_log("FATAL_ERROR", "Error fatal [$tipo_error]: $mensaje_error en el archivo $archivo_error en la línea $linea_error");
     }
 }
 

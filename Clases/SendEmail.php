@@ -36,7 +36,7 @@ class SendEmail
             $mail->Body = Utilidades::ifutf8_encode($body);
 
             $mail->send();
-            Logger::haz_log(__CLASS__, "Email enviado a to[$para] con el asunto [$subject] y mensaje: [$body]");
+            Logger::info_log(__CLASS__, "Email enviado a to[$para] con el asunto [$subject] y mensaje: [$body]");
             return new TRetorno(true);
         } catch (Exception $e) {
             return new TRetorno(false, "Error al enviar el correo: {$mail->ErrorInfo}");
