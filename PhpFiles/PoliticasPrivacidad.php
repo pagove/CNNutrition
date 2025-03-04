@@ -1,9 +1,9 @@
 <?php
-session_start();
 include_once("clases.php");
 
 $params = array_key_exists("param", $_GET) ? $_GET["param"] : false;
 $dts = $params ? json_decode(Utilidades::desencriptar($params)) : false;
+if (!$dts) die("Error");
 if ($dts) {
     $_u = Usuario::getDatosUsuario($dts->id);
     if (!$_u) die("<h2>No se ha encontrado el usuario</h2>.");

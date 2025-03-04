@@ -28,9 +28,9 @@ if (isset($_SESSION["id_usuario"])) {
             jsonAjax("_server.php?", dts, (r) => {
                 if (r.ok) {
                     if (r.rol != 0) {
-                        document.getElementById("perfilButton").style.display = "";
-                        Cargar('InicioCliente.html?id_usuario=' + r.id, 'cuerpo');
+                        Cargar('InicioCliente.php?id_usuario=' + r.id, 'cuerpo');
                     } else {
+                        document.getElementById("perfilButton").style.display = "";
                         Cargar('InicioLogin.php?id_usuario=' + r.id, 'cuerpo');
                     }
                     localStorage.setItem("CNNutrition_email", document.getElementById("email").value);

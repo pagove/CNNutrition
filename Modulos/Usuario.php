@@ -39,12 +39,12 @@ class Usuario
      * Datos generales
      */
 
-    public static function getDatosUsuario($idUsuario)
+    public static function getDatosUsuario($id_usuario)
     {
         $obd = Conexion::conecta();
         $sql = "SELECT *
                 FROM Usuarios
-                WHERE id=$idUsuario";
+                WHERE id=$id_usuario";
         return $obd->getObject($sql);
     }
 

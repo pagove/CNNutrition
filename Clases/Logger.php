@@ -14,7 +14,7 @@ class Logger
         "INFO" => "\033[32m" //verde
     );
 
-    public static function haz_log($clave, $message, $level = 0)
+    public static function  haz_log($clave, $message, $level = 0)
     {
         if (($level < 0 || $level > count(self::$levels))) {
             self::haz_log($clave, $message);
@@ -70,7 +70,6 @@ class Logger
                     echo "Error al crear el directorio: " . self::$directorio_var_log . "<br>";
                 }
             }
-
             // A continuación, crea el archivo
             if (touch(self::$archivo_en_var_log)) {
                 echo "Archivo creado con éxito: " . self::$archivo_en_var_log . "<br>";
@@ -78,8 +77,5 @@ class Logger
                 echo "Error al crear el archivo: " . self::$archivo_en_var_log . "<br>";
             }
         }
-
-        // A partir de aquí, puedes trabajar con el archivo en /var/log
-
     }
 }

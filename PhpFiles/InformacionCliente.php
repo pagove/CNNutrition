@@ -148,8 +148,9 @@ if (isset($_GET["cantidad"])) {
         Cargar("./InformacionCliente.php?id_usuario=" + id_usuario + "&cantidad=" + el.value, "cuerpoLogin");
     }
 
+    /*
     function guardarPlieguesCutaneos(id_usuario) {
-        var fecha = eur2iso(get("inDatePliegues"));
+        var fecha = eur2iso(get("inPlfFcha"));
         var tricipital = get("inTricipital");
         var subescapular = get("inSubescapular");
         var supraliaco = get("inSupraliaco");
@@ -183,6 +184,7 @@ if (isset($_GET["cantidad"])) {
             }
         });
     }
+    */
 </script>
 <?php
 

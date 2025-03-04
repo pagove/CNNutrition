@@ -74,13 +74,27 @@ class Utilidades
 
     public static function encriptar($data)
     {
-
         $metodo_cifrado = 'AES-256-CBC';
+        $clave = DatosConexion::getAESpasswd();
+
+        // Verificar si la clave tiene 32 bytes (256 bits)
+        if (strlen($clave) !== 32) {
+            throw new Exception("Clave de cifrado incorrecta. Debe ser de 32 bytes.");
+        }
 
         $iv_length = openssl_cipher_iv_length($metodo_cifrado);
-        $iv = openssl_random_pseudo_bytes($iv_length);
+        $iv = openssl_random_pseudo_bytes($iv_length, $crypto_strong);
 
-        $encrypted = openssl_encrypt($data, $metodo_cifrado, DatosConexion::getAESpasswd(), 0, $iv);
+        // Verificar si se generó un IV válido
+        if ($iv === false || !$crypto_strong) {
+            throw new Exception("No se pudo generar un IV seguro.");
+        }
+
+        $encrypted = openssl_encrypt($data, $metodo_cifrado, $clave, OPENSSL_RAW_DATA, $iv);
+
+        if ($encrypted === false) {
+            throw new Exception("Error al cifrar los datos.");
+        }
 
         return base64_encode($iv . $encrypted);
     }
@@ -88,14 +102,31 @@ class Utilidades
     public static function desencriptar($data_encriptada)
     {
         $metodo_cifrado = 'AES-256-CBC';
+        $clave = DatosConexion::getAESpasswd();
+
+        // Verificar si la clave tiene 32 bytes (256 bits)
+        if (strlen($clave) !== 32) {
+            throw new Exception("Clave de cifrado incorrecta. Debe ser de 32 bytes.");
+        }
 
         $data_encriptada = base64_decode($data_encriptada);
         $iv_length = openssl_cipher_iv_length($metodo_cifrado);
 
+        // Verificar que los datos encriptados sean mayores que la longitud del IV
+        if (strlen($data_encriptada) < $iv_length) {
+            throw new Exception("Los datos encriptados son inválidos.");
+        }
+
         $iv = substr($data_encriptada, 0, $iv_length);
         $encrypted = substr($data_encriptada, $iv_length);
 
-        return openssl_decrypt($encrypted, $metodo_cifrado, DatosConexion::getAESpasswd(), 0, $iv);
+        $decrypted = openssl_decrypt($encrypted, $metodo_cifrado, $clave, OPENSSL_RAW_DATA, $iv);
+
+        if ($decrypted === false) {
+            throw new Exception("Error al descifrar los datos.");
+        }
+
+        return $decrypted;
     }
 
     public static function array2set($v, $in = true, $parentesis = true, $comillas = true)
